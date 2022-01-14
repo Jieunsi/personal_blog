@@ -8,9 +8,9 @@ const logger = require('koa-logger')
 
 require('module-alias/register');
 
-const index = require('@/app/routes/index')
-const users = require('@/app/routes/users')
-const article = require('@/app/routes/article');
+const index = require('@/app/api/v1/index')
+const users = require('@/app/api/v1/users')
+const article = require('@/app/api/v1/article');
 
 // error handler
 onerror(app)

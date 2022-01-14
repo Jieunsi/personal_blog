@@ -1,4 +1,7 @@
-const { Article } = require('@/app/schema/article');
+/**
+ * @description 文章的数据访问对象(Data Access Object)
+ */
+const { Article } = require('@/app/models/article');
 
 class ArticleModel {
   /**

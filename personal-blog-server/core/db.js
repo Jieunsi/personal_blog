@@ -6,7 +6,7 @@ const {
   port,
   username,
   password,
-} = require('@/config/config').database;
+} = require('@/config/db').database;
 
 const sequelize = new Sequelize(database, username, password, {
   // 连接的数据库
@@ -21,7 +21,7 @@ const sequelize = new Sequelize(database, username, password, {
   },
 });
 
-sequelize.sync({ force: true })
+sequelize.sync({ force: false })
 
 sequelize.authenticate().then(res => {
   console.log('Connection established successfully.');

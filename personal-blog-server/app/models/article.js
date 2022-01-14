@@ -1,6 +1,9 @@
 const { sequelize } = require('@/core/db');
 const { Model, DataTypes } = require('sequelize');
 
+/**
+ * @description 定义文章模型，对应数据库表 Articles
+ */
 class Article extends Model {
 }
 
