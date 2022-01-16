@@ -7,8 +7,9 @@
       "@/*": ["./*"],
       "@core/*": ["./core/*"],
       "@controllers/*": ["./app/controllers/*"],
-      "@dao/*": ["./app/dao"],
-      "@models/*": ["./app/models"],
+      "@dao/*": ["./app/dao/*"],
+      "@models/*": ["./app/models/*"],
+      "@api/*": ["./app/api/v1/*"]
     }
   }
 }

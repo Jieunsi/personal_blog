@@ -13,7 +13,8 @@
     "@core": "./core",
     "@controllers": "./app/controllers",
     "@dao": "./app/dao",
-    "@models": "./app/models"
+    "@models": "./app/models",
+    "@api": "./app/api/v1"
   },
   "dependencies": {
     "@koa/cors": "^3.1.0",

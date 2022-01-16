@@ -1,9 +1,9 @@
 /**
  * @description 文章的数据访问对象(Data Access Object)
  */
-const { Article } = require('@/app/models/article');
+const { Article } = require('@models/article');
 
-class ArticleModel {
+class ArticleDao {
   /**
    * 创建文章模型
    * @param data
@@ -14,7 +14,7 @@ class ArticleModel {
       title: data.title,
       author: data.author,
       content: data.content,
-      category: data.category
+      category: data.category,
     });
   }
 
@@ -24,11 +24,11 @@ class ArticleModel {
    */
   static async getArticleDetail(id) {
     return await Article.findOne({
-      where:{
-        id
-      }
+      where: {
+        id,
+      },
     });
   }
 }
 
-module.exports = ArticleModel;
+module.exports = { ArticleDao };
