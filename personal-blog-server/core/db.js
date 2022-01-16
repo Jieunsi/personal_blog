@@ -17,10 +17,14 @@ const sequelize = new Sequelize(database, username, password, {
   timezone: '+08:00',
   // 当使用 sequelize.define 时会使用
   define: {
-
+    // 删除改为添加删除时间，即逻辑删除
+    paranoid: true,
+    // 冻结表名
+    freezeTableName: true,
   },
 });
 
+// 是否同步数据（是否删除原有同名表）
 sequelize.sync({ force: false })
 
 sequelize.authenticate().then(res => {
