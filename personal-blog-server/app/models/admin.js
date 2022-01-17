@@ -9,13 +9,13 @@ class Admin extends Model {}
 // 建立管理员模型
 Admin.init({
 	id: {
-		type: DataTypes.INTEGER(10).UNSIGNED,
+		type: DataTypes.INTEGER.UNSIGNED,
 		primaryKey: true,
 		autoIncrement: true,
 		comment: '管理员主键 ID',
 	},
 	email: {
-		type: DataTypes.STRING(50),
+		type: DataTypes.STRING,
 		// 唯一索引
 		unique: 'admin_email_unique',
 		allowNull: false,
@@ -34,9 +34,17 @@ Admin.init({
     comment: '登录密码',
   },
   nickname: {
-    type: DataTypes.STRING(50),
+    type: DataTypes.STRING,
     allowNull: false,
     comment: '管理员昵称',
+  },
+  created_at: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    comment: '创建时间',
+    get() {
+      return dayjs(this.getDataValue('created_at')).format('YYYY-MM-DD HH:mm:ss');
+    }
   }
 }, {
   sequelize,

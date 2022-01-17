@@ -13,6 +13,10 @@ const sequelize = new Sequelize(database, username, password, {
   // 当使用 sequelize.define 时会使用
   define: {
     timestamps: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+    deletedAt: 'deleted_at',
+    underscored: true,
     // 删除改为添加删除时间，即逻辑删除
     paranoid: true,
     // 冻结表名
