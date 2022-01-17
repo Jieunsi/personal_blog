@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const { sequelize } = require('@core/db');
 const { DataTypes, Model } = require('sequelize');
 
+// 定义用户表
 class User extends Model {}
 
 User.init(

@@ -1,9 +1,9 @@
 const { sequelize } = require('@/core/db');
 const dayjs = require('dayjs');
-const { Model, DataTypes, DATE } = require('sequelize');
+const { Model, DataTypes } = require('sequelize');
 
 /**
- * @description 定义文章模型，对应数据库表 Articles
+ * @description 定义文章模型，对应数据库表 Article
  */
 class Article extends Model {}
 

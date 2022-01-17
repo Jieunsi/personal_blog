@@ -11,6 +11,7 @@ require('module-alias/register');
 
 const article = require('@api/article');
 const admin = require('@api/admin');
+const article_label =  require('@api/article_label');
 
 // error handler
 onerror(app);
@@ -43,6 +44,7 @@ app.use(async (ctx, next) => {
 // routes
 app.use(article.routes(), article.allowedMethods());
 app.use(admin.routes(), admin.allowedMethods());
+app.use(article_label.routes(), article_label.allowedMethods());
 
 // error-handling
 app.on('error', (err, ctx) => {

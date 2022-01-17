@@ -2,6 +2,7 @@ const dayjs = require('dayjs');
 const { DataTypes, Model } = require('sequelize');
 const { sequelize } = require('@core/db');
 
+// 定义评论表
 class Comment extends Model {}
 
 Comment.init(
@@ -21,11 +22,6 @@ Comment.init(
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
       comment: '关联的评论文章ID',
-    },
-    parent_comment_id: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      allowNull: true,
-      comment: '父级评论 ID',
     },
     user_id: {
       type: DataTypes.INTEGER.UNSIGNED,
