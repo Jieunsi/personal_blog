@@ -1,5 +1,5 @@
 const Koa = require('koa');
-const app = new Koa();
+const InitManager = require('./core/init');
 const views = require('koa-views');
 const json = require('koa-json');
 const onerror = require('koa-onerror');
@@ -9,10 +9,7 @@ const cors = require('@koa/cors');
 
 require('module-alias/register');
 
-const article = require('@api/article');
-const admin = require('@api/admin');
-const article_label =  require('@api/article_label');
-
+const app = new Koa();
 // error handler
 onerror(app);
 
@@ -42,9 +39,7 @@ app.use(async (ctx, next) => {
 });
 
 // routes
-app.use(article.routes(), article.allowedMethods());
-app.use(admin.routes(), admin.allowedMethods());
-app.use(article_label.routes(), article_label.allowedMethods());
+InitManager.init(app);
 
 // error-handling
 app.on('error', (err, ctx) => {

@@ -44,5 +44,5 @@ Reply.init(
 );
 
 module.exports = {
-  reply,
+  Reply,
 };
