@@ -9,7 +9,11 @@
       "@controllers/*": ["./app/controllers/*"],
       "@dao/*": ["./app/dao/*"],
       "@models/*": ["./app/models/*"],
-      "@api/*": ["./app/api/v1/*"]
+      "@api/*": ["./app/api/v1/*"],
+      "@middlewares/*": ["./middlewares/*"],
+      "@service/*": ["./app/service/*"],
+      "@lib/*": ["./app/lib/*"],
+      "@validators/*": ["./app/validators/*"]
     }
   }
 }

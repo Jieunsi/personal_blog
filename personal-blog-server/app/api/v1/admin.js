@@ -5,7 +5,9 @@ const Router = require('koa-router');
 const { adminController } = require('@controllers/admin');
 
 const router = new Router({
-	prefix: '/api/v1',
+	prefix: '/api/v1/admin',
 });
+
+router.post('/register', adminController.register);
 
 module.exports = router;

@@ -8,6 +8,7 @@ const logger = require('koa-logger');
 const cors = require('@koa/cors');
 
 require('module-alias/register');
+const errorCatcher = require('./middlewares/exception');
 
 const app = new Koa();
 // error handler
@@ -38,12 +39,13 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
 });
 
+app.use(errorCatcher);
 // routes
 InitManager.init(app);
 
 // error-handling
-app.on('error', (err, ctx) => {
-  console.error('server error', err, ctx);
-});
+// app.on('error', (err, ctx) => {
+//   console.error('server errors', err, ctx);
+// });
 
 module.exports = app;

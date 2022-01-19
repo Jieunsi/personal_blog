@@ -25,7 +25,7 @@ Admin.init({
     type: DataTypes.STRING,
     set(value) {
       // 加盐
-      const salt = bcrypt.genSalt();
+      const salt = bcrypt.genSaltSync();
       // 生成加密密码
       const pwd  = bcrypt.hashSync(value, salt);
       this.setDataValue('password', pwd);

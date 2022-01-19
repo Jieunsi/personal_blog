@@ -17,11 +17,13 @@ class AdminDao {
       },
     });
 
-    if (hasAdmin) {
-      // throw new global.errs.Existing('管理员已存在');
-    }
+    // 走不到这
+    // if (hasAdmin) {
+    //   throw new global.errs.Existing('管理员已存在');
+    // }
+    // 不推荐直接 new 实例
+    const admin = Admin.build();
 
-    const admin = new Admin();
     admin.nickname = nickname;
     admin.email = email;
     admin.password = password;
