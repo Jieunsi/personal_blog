@@ -8,6 +8,7 @@ const sequelize = new Sequelize(database, username, password, {
   dialect: 'mysql',
   host,
   port,
+  logging: false,
   // 定义时区
   timezone: '+08:00',
   // 当使用 sequelize.define 时会使用

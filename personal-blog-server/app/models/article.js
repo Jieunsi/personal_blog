@@ -47,7 +47,7 @@ Article.init(
       defaultValue: 0,
       comment: '文章点赞次数',
     },
-    category_id: {
+    sort_id: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
       comment: '关联分类 ID',

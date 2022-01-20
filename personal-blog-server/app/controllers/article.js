@@ -1,8 +1,35 @@
 /**
  * @description 文章的控制器
  */
+const {
+  ArticleValidator,
+  PositiveIdParamsValidator,
+} = require('@validators/article');
+const { Auth } = require('@middlewares/auth');
 const { ArticleDao } = require('@dao/article');
+const { CommentDao } = require('@dao/comment');
+const { Resolve } = require('@lib/helper');
+const res = new Resolve();
 
+const hljs = require('highlight.js');
+const md = require('markdown-it')({
+  highlight: (str, lang) => {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return (
+          '<pre class="hljs"><code>' +
+          hljs.highlight(str, {
+            language: lang,
+            ignoreIllegals: true,
+          }).value +
+          '</code></pre>'
+        );
+      } catch (__) {}
+    }
+
+    return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>';
+  },
+});
 class articleController {
   /**
    * 创建文章
@@ -10,35 +37,27 @@ class articleController {
    * @returns {Promise.<void>}
    */
   static async create(ctx) {
-    //接收客服端
-    let req = ctx.request.body;
-    if (req.title && req.author && req.content && req.category) {
-      try {
-        //创建文章模型
-        const ret = await ArticleDao.createArticle(req);
-        //使用刚刚创建的文章ID查询文章详情，且返回文章详情信息
-        const data = await ArticleDao.getArticleDetail(ret.id);
-
-        ctx.response.status = 200;
-        ctx.body = {
-          code: 200,
-          msg: '创建文章成功',
-          data,
-        };
-      } catch (err) {
-        ctx.response.status = 412;
-        ctx.body = {
-          code: 412,
-          msg: '创建文章失败',
-          data: err,
-        };
-      }
+    const value = await new ArticleValidator().validate(ctx);
+    const [err, data] = await ArticleDao.create(value);
+    if (!err) {
+      ctx.response.status = 200;
+      ctx.body = res.success('创建文章成功');
     } else {
-      ctx.response.status = 416;
-      ctx.body = {
-        code: 200,
-        msg: '参数不齐全',
-      };
+      ctx.body = res.fail(err);
+    }
+  }
+
+  /**
+   * 获取文章列表
+   */
+  static async list(ctx) {
+    console.log(ctx.query, 'ctx')
+    const [err, data] = await ArticleDao.list(ctx.query);
+    if (!err) {
+      ctx.response.status = 200;
+      ctx.body = res.json(data);
+    } else {
+      ctx.body = res.fail(err);
     }
   }
 

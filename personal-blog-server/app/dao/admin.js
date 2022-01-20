@@ -40,7 +40,6 @@ class AdminDao {
           email,
         },
       });
-
       if (!admin) {
         throw new global.errs.AuthFailed('账号不存在');
       }
