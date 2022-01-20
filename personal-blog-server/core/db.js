@@ -21,7 +21,7 @@ const sequelize = new Sequelize(database, username, password, {
     paranoid: true,
     // 冻结表名
     freezeTableName: true,
-    // 范围
+    // 从结果排除下列属性
     scopes: {
       bh: {
         attributes: {

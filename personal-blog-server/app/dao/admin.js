@@ -10,17 +10,6 @@ class AdminDao {
   static async create(params) {
     const { email, password, nickname } = params;
 
-    const hasAdmin = await Admin.findOne({
-      where: {
-        email,
-        deleted_at: null,
-      },
-    });
-
-    // 走不到这
-    // if (hasAdmin) {
-    //   throw new global.errs.Existing('管理员已存在');
-    // }
     // 不推荐直接 new 实例
     const admin = Admin.build();
 
