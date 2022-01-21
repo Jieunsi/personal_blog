@@ -14,6 +14,6 @@ router.post('/register', adminController.register);
 // 登录
 router.post('/login', adminController.login);
 // 获取管理员信息
-router.post('/auth', new Auth(10).m, adminController.auth);
+router.post('/auth', new Auth(16).m, adminController.auth);
 
 module.exports = router;

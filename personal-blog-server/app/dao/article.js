@@ -11,11 +11,11 @@ const { isArray, unique } = require('@lib/utils');
 class ArticleDao {
   /**
    * 创建文章
-   * @param ctx
+   * @param v
    * @returns Promise<any>
    */
-  static async create(ctx) {
-    const title = ctx.get('body.title');
+  static async create(v) {
+    const title = v.get('body.title');
     const hasArticle = await Article.findOne({
       where: {
         title,
@@ -28,10 +28,10 @@ class ArticleDao {
 
     const article = Article.build();
     article.title = title;
-    article.author_id = ctx.get('body.author_id');
-    article.img_url = ctx.get('body.img_url');
-    article.content = ctx.get('body.content');
-    article.sort_id = ctx.get('body.sort_id');
+    article.author_id = v.get('body.author_id');
+    article.img_url = v.get('body.img_url');
+    article.content = v.get('body.content');
+    article.sort_id = v.get('body.sort_id');
 
     try {
       const res = await article.save();
@@ -126,7 +126,6 @@ class ArticleDao {
    * @returns
    */
   static async list(params = {}) {
-    console.log(params, 'params');
     const { sort_id, keyword, page_size = 10, page = 1 } = params;
 
     // 过滤条件
@@ -144,7 +143,6 @@ class ArticleDao {
         [Op.like]: `%${keyword}%`,
       };
     }
-    console.log(page_size ,'page_size');
     try {
       const article = await Article.scope('iv').findAndCountAll({
         limit: parseInt(page_size), //默认每页十条
@@ -152,7 +150,6 @@ class ArticleDao {
         where: filter,
         order: [['created_at', 'DESC']],
       });
-      console.log(article);
 
       let rows = article.rows;
       // 获取分类
@@ -161,6 +158,8 @@ class ArticleDao {
           return item.sort_id;
         })
       );
+
+      // rows传的是引用值
       const [sortErr, dataAndSort] = await ArticleDao._handleSort(
         rows,
         sortIds
@@ -168,8 +167,6 @@ class ArticleDao {
       if (!sortErr) {
         rows = dataAndSort;
       }
-      
-
       // 处理作者
       const authorIds = unique(rows.map((item) => item.author_id));
       const [userErr, dataAndAuthor] = await ArticleDao._handleAuthor(
@@ -198,15 +195,148 @@ class ArticleDao {
   }
 
   /**
+   * @description 删除文章
+   * @param  id 
+   * @returns [err, data] 
+   */
+  static async delete(id) {
+    const article = await Article.findOne({
+      where: {
+        id,
+        deleted_at: null
+      }
+    });
+    if (!article) {
+      throw new global.errs.NotFound('没有找到该文章');
+    }
+
+    try {
+      const res = article.destroy();
+      return [null, res];
+    } catch (err) {
+      return [err, null];
+    }
+  }
+
+  /**
+   * @description 更新文章
+   * @param  id , v 
+   * @returns 
+   */
+  static async update(id, v) {
+    const article = await Article.findOne({
+      where: {
+        id,
+        deleted_at: null
+      }
+    });
+    if (!article) {
+      throw new global.errs.NotFound('没有此文章');
+    }
+    article.title = v.get('body.title');
+    article.author_id = v.get('body.author_id');
+    article.img_url = v.get('body.img_url');
+    article.content = v.get('body.content');
+    article.sort_id = v.get('body.sort_id');
+    
+    try {
+      const res = await article.save();
+      return [null, res];
+    } catch (err) {
+      return [err, null];
+    }
+  }
+
+  /**
+   * @description 更新文章浏览次数
+   * @param {id, views} 
+   */
+  static async updateViews(id, views) {
+    const article = await Article.findByPk(id);
+    if (!article) {
+      throw new global.errs.NotFound('没有找到相关文章');
+    }
+    article.views = views;
+
+    try {
+      const res = await article.save();
+      return [null, res];
+    } catch (err) {
+      return [err, null];
+    }
+  }
+
+  /**
+   * @description 更新文章点赞次数
+   * @param {id, likes} 
+   */
+   static async updateLikes(id, likes) {
+    const article = await Article.findByPk(id);
+    if (!article) {
+      throw new global.errs.NotFound('没有找到相关文章');
+    }
+    article.likes = likes;
+
+    try {
+      const res = await article.save();
+      return [null, res];
+    } catch (err) {
+      return [err, null];
+    }
+  }
+
+  /**
    * 查询文章的详情
    * @param id 文章 ID
    */
-  static async getArticleDetail(id) {
-    return await Article.findOne({
-      where: {
+  static async detail(id) {
+    try {
+      let filter = {
         id,
-      },
-    });
+        deleted_at: null
+      };
+
+      let article = await Article.findOne({
+        where: filter,
+      });
+
+      // rows传的是引用值
+      await ArticleDao._handleSort(
+        article,
+        article.sort_id
+      );
+      // if (!sortErr) {
+      //   article = dataAndSort;
+      // }
+      // 处理作者
+      await ArticleDao._handleAuthor(
+        article,
+        article.author_id
+      );
+      // if (!userErr) {
+      //   rows = dataAndAuthor;
+      // }
+      
+      if (!article) {
+        throw new global.errs.NotFound('没有该文章');
+      }
+
+      const comment = await Comment.findAndCountAll({
+        where: {
+          article_id: id,
+          deleted_at: null
+        },
+        attributes: ['id']
+      });
+
+      if (comment) {
+        article.setDataValue('comment_count', comment.count || 0);
+      }
+
+      return [null, article];
+    } catch (err) {
+      return [err, null];
+    }
   }
 }
 

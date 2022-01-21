@@ -1,4 +1,4 @@
-const basicAuth = require('basic-auth')
+
 const jwt = require('jsonwebtoken')
 
 class Auth {
@@ -14,37 +14,36 @@ class Auth {
     // token 检测
     // token 开发者 传递令牌
     // token body header
-    // HTTP 规定 身份验证机制 HttpBasicAuth
+    // HTTP 规定 身份验证机制 Bearer
     return async (ctx, next) => {
-      const tokenToken = basicAuth(ctx.req);
-
+      const { authorization  } = ctx.request.header;
       let errMsg = "无效的token";
-      // 无带token
-      if (!tokenToken || !tokenToken.name) {
+      // 无token
+      if (!authorization) {
         errMsg = "需要携带token值";
         throw new global.errs.Forbidden(errMsg);
       }
+      const token = authorization.replace('Bearer ', '');
 
       try {
-        var decode = jwt.verify(tokenToken.name, global.config.security.secretKey);
-
+        // var decode = jwt.verify(tokenToken.name, global.config.security.secretKey);
+        var info = jwt.verify(token, global.config.security.secretKey);
       } catch (error) {
         // token 不合法 过期
         if (error.name === 'TokenExpiredError') {
           errMsg = "token已过期"
         }
-
         throw new global.errs.Forbidden(errMsg);
       }
 
-      if (decode.scope < this.level) {
+      if (info.scope < this.level) {
         errMsg = "权限不足"
         throw new global.errs.Forbidden(errMsg);
       }
 
       ctx.auth = {
-        uid: decode.uid,
-        scope: decode.scope
+        uid: info.uid,
+        scope: info.scope
       }
 
       await next()

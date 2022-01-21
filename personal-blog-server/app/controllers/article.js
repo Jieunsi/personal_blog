@@ -4,6 +4,7 @@
 const {
   ArticleValidator,
   PositiveIdParamsValidator,
+  ArticleUpdateValidator,
 } = require('@validators/article');
 const { Auth } = require('@middlewares/auth');
 const { ArticleDao } = require('@dao/article');
@@ -48,10 +49,42 @@ class articleController {
   }
 
   /**
+   * 删除文章
+   */
+  static async delete(ctx) {
+    const v = await new PositiveIdParamsValidator().validate(ctx);
+
+    const id = v.get('path.id');
+    const [err, data] = await ArticleDao.delete(id);
+    if (!err) {
+      ctx.response.status = 200;
+      ctx.body = res.success('删除文章成功');
+    } else {
+      ctx.body = res.fail(err);
+    }
+  }
+
+  /**
+   * 更新文章
+   */
+  static async update(ctx) {
+    const v = await new ArticleUpdateValidator().validate(ctx);
+    
+    const id = v.get('path.id');
+    const [err, data] = await ArticleDao.update(id, v);
+    if (!err) {
+      ctx.response.status = 200;
+      ctx.body = res.success('文章更新成功');
+    } else {
+      ctx.body = res.fail(err);
+    }
+  }
+
+  /**
    * 获取文章列表
    */
   static async list(ctx) {
-    console.log(ctx.query, 'ctx')
+
     const [err, data] = await ArticleDao.list(ctx.query);
     if (!err) {
       ctx.response.status = 200;
@@ -62,36 +95,51 @@ class articleController {
   }
 
   /**
+   * @description 更新点赞次数
+   * @param {id} 
+   */
+  static async like(ctx) {
+    const v = await new PositiveIdParamsValidator().validate(ctx);
+    const id = v.get('path.id');
+    const { type } = ctx.query;
+    const [err, data] = await ArticleDao.detail(id);
+    if (type == 'like') {
+      var [_err, _data] = await ArticleDao.updateLikes(id, ++data.likes);
+    } else {
+      var [_err, _data] = await ArticleDao.updateLikes(id, --data.likes);
+    }
+    if (!_err) {
+      ctx.response.status = 200;
+      ctx.body = res.success('更新点赞次数成功');
+    } else {
+      ctx.fail(_err);
+    }
+  }
+
+  /**
    * 获取文章详情
    * @param ctx
    * @returns {Promise.<void>}
    */
   static async detail(ctx) {
-    let id = ctx.params.id;
-    if (id) {
-      try {
-        // 查询文章详情模型
-        let data = await ArticleDao.getArticleDetail(id);
-        ctx.response.status = 200;
-        ctx.body = {
-          code: 200,
-          msg: '查询成功',
-          data,
-        };
-      } catch (err) {
-        ctx.response.status = 412;
-        ctx.body = {
-          code: 412,
-          msg: '查询失败',
-          data,
-        };
+    const v = await new PositiveIdParamsValidator().validate(ctx);
+    const id = v.get('path.id');
+
+    const [err, data] = await ArticleDao.detail(id);
+    if (!err) {
+      // 获取此文章的评论列表
+      //!! TODO
+
+      if (ctx.query.is_markdown) {
+        data.content = md.render(data.content);
       }
+
+      // 更新文章浏览次数
+      await ArticleDao.updateViews(id, ++data.views);
+      ctx.response.status = 200;
+      ctx.body = res.json(data);
     } else {
-      ctx.response.status = 416;
-      ctx.body = {
-        code: 416,
-        msg: '文章ID必须传',
-      };
+      ctx.body = res.fail(err);
     }
   }
 }
