@@ -305,18 +305,12 @@ class ArticleDao {
         article,
         article.sort_id
       );
-      // if (!sortErr) {
-      //   article = dataAndSort;
-      // }
       // 处理作者
       await ArticleDao._handleAuthor(
         article,
         article.author_id
       );
-      // if (!userErr) {
-      //   rows = dataAndAuthor;
-      // }
-      
+
       if (!article) {
         throw new global.errs.NotFound('没有该文章');
       }

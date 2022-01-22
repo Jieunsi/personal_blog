@@ -28,7 +28,9 @@ const md = require('markdown-it')({
       } catch (__) {}
     }
 
-    return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>';
+    return (
+      '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>'
+    );
   },
 });
 class articleController {
@@ -69,7 +71,7 @@ class articleController {
    */
   static async update(ctx) {
     const v = await new ArticleUpdateValidator().validate(ctx);
-    
+
     const id = v.get('path.id');
     const [err, data] = await ArticleDao.update(id, v);
     if (!err) {
@@ -84,7 +86,6 @@ class articleController {
    * 获取文章列表
    */
   static async list(ctx) {
-
     const [err, data] = await ArticleDao.list(ctx.query);
     if (!err) {
       ctx.response.status = 200;
@@ -96,13 +97,17 @@ class articleController {
 
   /**
    * @description 更新点赞次数
-   * @param {id} 
+   * @param {id}
    */
   static async like(ctx) {
     const v = await new PositiveIdParamsValidator().validate(ctx);
     const id = v.get('path.id');
     const { type } = ctx.query;
     const [err, data] = await ArticleDao.detail(id);
+    if (err) {
+      ctx.body = res.fail(err);
+      return;
+    }
     if (type == 'like') {
       var [_err, _data] = await ArticleDao.updateLikes(id, ++data.likes);
     } else {
@@ -112,7 +117,7 @@ class articleController {
       ctx.response.status = 200;
       ctx.body = res.success('更新点赞次数成功');
     } else {
-      ctx.fail(_err);
+      ctx.body = res.fail(_err);
     }
   }
 
@@ -128,12 +133,16 @@ class articleController {
     const [err, data] = await ArticleDao.detail(id);
     if (!err) {
       // 获取此文章的评论列表
-      //!! TODO
+      const [commentErr, commentData] = await CommentDao.targetComment({
+        article_id: id,
+      });
+      if (!commentErr) {
+        data.setDataValue('article_comment', commentData);
+      }
 
       if (ctx.query.is_markdown) {
         data.content = md.render(data.content);
       }
-
       // 更新文章浏览次数
       await ArticleDao.updateViews(id, ++data.views);
       ctx.response.status = 200;

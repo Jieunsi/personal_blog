@@ -20,6 +20,6 @@ router.put('/update/:id', new Auth(16).m, articleController.update);
 // 更新点赞次数
 router.put('/like/:id', new Auth(16).m, articleController.like);
 // 获取文章详情
-router.get('/:id', articleController.detail);
+router.get('/detail/:id', articleController.detail);
 
 module.exports = router;
