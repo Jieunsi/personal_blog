@@ -14,11 +14,6 @@ User.init(
       autoIncrement: true,
       comment: '用户主键ID',
     },
-    username: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      comment: '用户名',
-    },
     password: {
       type: DataTypes.STRING,
       set(val) {
@@ -57,6 +52,11 @@ User.init(
       allowNull: true,
       comment: '年龄',
     },
+    // username: {
+    //   type: DataTypes.STRING,
+    //   allowNull: false,
+    //   comment: '用户名',
+    // },
   },
   {
     sequelize,
