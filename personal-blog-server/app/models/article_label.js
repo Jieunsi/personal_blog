@@ -22,6 +22,11 @@ ArticleLabel.init(
       allowNull: false,
       comment: '标签的id',
     },
+    label_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      comment: '标签名称'
+    }
   },
   {
     sequelize,
