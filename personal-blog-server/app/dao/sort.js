@@ -27,7 +27,6 @@ class SortDao {
       const res = await sort.save();
       const data = {
         sort_name: res.sort_name,
-        key: res.key,
         parent_id: res.parent_id,
         msg: '创建成功'
       }

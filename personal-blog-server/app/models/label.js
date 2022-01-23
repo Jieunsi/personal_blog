@@ -12,7 +12,7 @@ Label.init(
       autoIncrement: true,
       comment: '文章标签的id',
     },
-    sort_name: {
+    label_name: {
       type: DataTypes.STRING,
       allowNull: false,
       comment: '标签名',
