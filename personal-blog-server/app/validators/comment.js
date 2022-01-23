@@ -3,7 +3,7 @@ const {
   LinValidator
 } = require('@core/lin-validator');
 
-class CommentValidator extends LinValidator {
+class CreateCommentValidator extends LinValidator {
   constructor() {
     super()
 
@@ -31,6 +31,6 @@ class PositiveArticleIdParamsValidator extends LinValidator {
 }
 
 module.exports = {
-  CommentValidator,
+  CreateCommentValidator,
   PositiveArticleIdParamsValidator
 }

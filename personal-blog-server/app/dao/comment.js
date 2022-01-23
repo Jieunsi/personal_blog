@@ -13,12 +13,22 @@ class CommentDao {
    */
   static async create(v) {
     const comment = Comment.build();
-    comment.article_id = v.get('body.article_id');
+    const article_id = v.get('body.article_id');
+    const user_id = v.get('body.user_id');
+    const articleExist = await Article.findByPk(article_id);
+    const userExist = await User.findByPk(user_id);
+    if (!articleExist) {
+      throw new global.errs.NotFound('没有该文章id');
+    }
+    if (!userExist) {
+      throw new global.errs.NotFound('没有该用户');
+    }
+    comment.article_id = article_id;
     comment.content = v.get('body.content');
-    comment.user_id = v.get('body.user_id');
+    comment.user_id = user_id;
 
     try {
-      const res = await Comment.afterSave();
+      const res = await comment.save();
       return [null, res];
     } catch (err) {
       return [err, null];
