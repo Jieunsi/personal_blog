@@ -55,110 +55,110 @@ export const constantRoutes = [
     }]
   },
 
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'el-icon-s-help' },
-    children: [
-      {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
-      }
-    ]
-  },
+  // {
+  //   path: '/category',
+  //   component: Layout,
+  //   redirect: '/category/index',
+  //   name: 'Category',
+  //   meta: { title: '分类管理', icon: 'tree' },
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'CategoryList',
+  //       component: () => import('@/views/category/index'),
+  //       meta: { title: '分类列表', icon: 'table' }
+  //     },
+  //     {
+  //       path: 'create',
+  //       name: 'CategoryCreate',
+  //       component: () => import('@/views/category/create'),
+  //       meta: { title: '创建分类', icon: 'el-icon-circle-plus-outline' }
+  //     },
+  //     {
+  //       path: 'edit',
+  //       name: 'CategoryEdit',
+  //       component: () => import('@/views/category/edit')
+  //     }
+  //   ]
+  // },
 
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
-  },
+  // {
+  //   path: '/article',
+  //   component: Layout,
+  //   redirect: '/article/index',
+  //   name: 'Article',
+  //   meta: { title: '文章管理', icon: 'el-icon-s-help' },
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'ArticleIndex',
+  //       component: () => import('@/views/article/index'),
+  //       meta: { title: '文章列表', icon: 'table' }
+  //     },
+  //     {
+  //       path: 'create',
+  //       name: 'ArticleCreate',
+  //       component: () => import('@/views/article/create'),
+  //       meta: { title: '创建文章', icon: 'tree' }
+  //     },
+  //     {
+  //       path: 'edit',
+  //       name: 'ArticleEdit',
+  //       component: () => import('@/views/article/edit')
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/user',
+  //   component: Layout,
+  //   redirect: '/user/index',
+  //   name: 'Reply',
+  //   meta: { title: '用户管理', icon: 'el-icon-s-help' },
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'UserIndex',
+  //       component: () => import('@/views/user/index'),
+  //       meta: { title: '用户列表', icon: 'table' }
+  //     },
+  //     {
+  //       path: 'edit',
+  //       name: 'UserEdit',
+  //       component: () => import('@/views/user/edit')
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/comment',
+  //   component: Layout,
+  //   redirect: '/comment/index',
+  //   name: 'Comment',
+  //   meta: { title: '评论管理', icon: 'el-icon-s-help' },
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'CommentIndex',
+  //       component: () => import('@/views/comment/index'),
+  //       meta: { title: '评论列表', icon: 'table' }
+  //     }
+  //   ]
+  // },
 
-  {
-    path: '/nested',
-    component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
-    meta: {
-      title: 'Nested',
-      icon: 'nested'
-    },
-    children: [
-      {
-        path: 'menu1',
-        component: () => import('@/views/nested/menu1/index'), // Parent router-view
-        name: 'Menu1',
-        meta: { title: 'Menu1' },
-        children: [
-          {
-            path: 'menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
-          },
-          {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
-              }
-            ]
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
-          }
-        ]
-      },
-      {
-        path: 'menu2',
-        component: () => import('@/views/nested/menu2/index'),
-        name: 'Menu2',
-        meta: { title: 'menu2' }
-      }
-    ]
-  },
-
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
-      }
-    ]
-  },
+  // {
+  //   path: '/reply',
+  //   component: Layout,
+  //   redirect: '/reply/index',
+  //   name: 'Reply',
+  //   meta: { title: '回复管理', icon: 'el-icon-s-help' },
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'ReplyIndex',
+  //       component: () => import('@/views/reply/index'),
+  //       meta: { title: '回复列表', icon: 'table' }
+  //     }
+  //   ]
+  // },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }

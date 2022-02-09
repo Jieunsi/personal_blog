@@ -32,14 +32,14 @@ router.beforeEach(async(to, from, next) => {
       } else {
         try {
           // get user info
-          await store.dispatch('user/getInfo')
+          await store.dispatch('admin/getInfo')
 
           next()
         } catch (error) {
           // remove token and go to login page to re-login
-          await store.dispatch('user/resetToken')
+          await store.dispatch('admin/resetToken')
           Message.error(error || 'Has Error')
-          next(`/login?redirect=${to.path}`)
+          next(`/login?redirect=${to.fullPath}`)
           NProgress.done()
         }
       }

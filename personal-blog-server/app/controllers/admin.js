@@ -30,7 +30,6 @@ class adminController {
   // 管理员登录
   static async login(ctx) {
     const value = await new AdminLoginValidator().validate(ctx);
-
     const [err, token] = await LoginManager.adminLogin({
       email: value.get('body.email'),
       password: value.get('body.password'),
