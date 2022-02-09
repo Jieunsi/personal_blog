@@ -82,32 +82,32 @@ export const constantRoutes = [
   //   ]
   // },
 
-  // {
-  //   path: '/article',
-  //   component: Layout,
-  //   redirect: '/article/index',
-  //   name: 'Article',
-  //   meta: { title: '文章管理', icon: 'el-icon-s-help' },
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       name: 'ArticleIndex',
-  //       component: () => import('@/views/article/index'),
-  //       meta: { title: '文章列表', icon: 'table' }
-  //     },
-  //     {
-  //       path: 'create',
-  //       name: 'ArticleCreate',
-  //       component: () => import('@/views/article/create'),
-  //       meta: { title: '创建文章', icon: 'tree' }
-  //     },
-  //     {
-  //       path: 'edit',
-  //       name: 'ArticleEdit',
-  //       component: () => import('@/views/article/edit')
-  //     }
-  //   ]
-  // },
+  {
+    path: '/article',
+    component: Layout,
+    redirect: '/article/index',
+    name: 'Article',
+    meta: { title: '文章管理', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'index',
+        name: 'ArticleIndex',
+        component: () => import('@/views/article/index'),
+        meta: { title: '文章列表', icon: 'table' }
+      },
+      {
+        path: 'create',
+        name: 'ArticleCreate',
+        component: () => import('@/views/article/create'),
+        meta: { title: '创建文章', icon: 'tree' }
+      },
+      {
+        path: 'edit',
+        name: 'ArticleEdit',
+        component: () => import('@/views/article/edit')
+      }
+    ]
+  },
   // {
   //   path: '/user',
   //   component: Layout,

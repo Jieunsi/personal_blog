@@ -60,9 +60,9 @@ const actions = {
             return reject('Verification failed, please Login again.');
           }
 
-          const { name } = data;
+          const { nickname } = data;
 
-          commit('SET_NAME', name);
+          commit('SET_NAME', nickname);
           commit('SET_AVATAR', "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202004%2F14%2F20200414164613_nmoji.thumb.1000_0.jpg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1646992720&t=9dacfe842d91ef766596622be017441e");
           commit('SET_ADMIN_INFO', data);
           resolve(data);
