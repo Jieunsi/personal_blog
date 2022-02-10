@@ -16,7 +16,7 @@ export function list(params) {
   })
 }
 
-export function deleteArticle(data) {
+export function detele(data) {
   return request({
     url: `/article/delete/${data.id}`,
     method: 'delete',

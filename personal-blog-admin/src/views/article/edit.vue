@@ -10,14 +10,8 @@
       <el-form-item label="标题" prop="title">
         <el-input v-model="ruleForm.title" />
       </el-form-item>
-      <el-form-item label="描述" prop="description">
-        <el-input v-model="ruleForm.description" />
-      </el-form-item>
       <el-form-item label="图片" prop="img_url">
         <el-input v-model="ruleForm.img_url" />
-      </el-form-item>
-      <el-form-item label="SEO关键字" prop="seo_keyword">
-        <el-input v-model="ruleForm.seo_keyword" />
       </el-form-item>
       <el-form-item label="图片" prop="img_url">
         <el-upload
@@ -37,14 +31,8 @@
           <i v-else class="el-icon-plus avatar-uploader-icon" />
         </el-upload>
       </el-form-item>
-      <el-form-item label="展示" prop="status">
-        <el-radio-group v-model="ruleForm.status">
-          <el-radio :label="1">显示</el-radio>
-          <el-radio :label="0">隐藏</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="分类" prop="category_id">
-        <el-select v-model="ruleForm.category_id" placeholder="请选择分类">
+      <el-form-item label="分类" prop="sort_id">
+        <el-select v-model="ruleForm.sort_id" placeholder="请选择分类">
           <el-option
             v-for="item in categoryList"
             :key="item.id"
@@ -52,9 +40,6 @@
             :value="item.id"
           />
         </el-select>
-      </el-form-item>
-      <el-form-item label="排序" prop="sort_order">
-        <el-input v-model="ruleForm.sort_order" />
       </el-form-item>
       <el-form-item label="内容" prop="content">
         <mavon-editor
@@ -85,7 +70,7 @@ import { getToken } from '@/api/upload'
 import axios from 'axios'
 
 export default {
-  name: 'CategoryCreate',
+  name: 'ArticleEdit',
   data() {
     return {
       token: '',
@@ -93,33 +78,17 @@ export default {
       ruleForm: {
         id: this.$route.query.id,
         title: '',
-        description: '',
         img_url: '',
-        seo_keyword: '',
-        status: 1,
-        sort_order: 1,
-        admin_id: '',
-        category_id: '',
+        author_id: '',
+        sort_id: '',
         content: ''
       },
       rules: {
         title: [{ required: true, message: '请输入文章标题', trigger: 'blur' }],
-        description: [
-          { required: true, message: '请输入文章描述', trigger: 'blur' }
-        ],
         img_url: [
           { required: true, message: '请输入图片链接', trigger: 'blur' }
         ],
-        seo_keyword: [
-          { required: true, message: '请输入 SEO 关键字', trigger: 'blur' }
-        ],
-        status: [
-          { required: true, message: '请输入展示状态', trigger: 'blur' }
-        ],
-        sort_order: [
-          { required: true, message: '请输入文章排序', trigger: 'blur' }
-        ],
-        category_id: [
+        sort_id: [
           { required: true, message: '请选择分类', trigger: 'blur' }
         ],
         content: [{ required: true, message: '请输入内容', trigger: 'blur' }]
@@ -141,7 +110,7 @@ export default {
       this.getUploadToken()
       this.getCategoryList()
     },
-    // 获取用户信息
+    // 获取上传token
     async getUploadToken() {
       try {
         const res = await getToken()
@@ -158,15 +127,11 @@ export default {
           is_markdown: false
         })
         this.ruleForm.title = res.data.title
-        this.ruleForm.description = res.data.description
         this.ruleForm.img_url = res.data.img_url
         this.ruleForm.content = res.data.content
-        this.ruleForm.seo_keyword = res.data.seo_keyword
-        this.ruleForm.status = res.data.status
-        this.ruleForm.sort_order = res.data.sort_order
-        this.ruleForm.category_id = res.data.category_info.id
+        this.ruleForm.sort_id = res.data.category_info.id
         this.ruleForm.content = res.data.content
-        this.ruleForm.admin_id =
+        this.ruleForm.author_id =
           (this.adminInfo && this.adminInfo.id) || res.data.adminInfo.id
       } catch (err) {
         console.log(err)
@@ -174,7 +139,7 @@ export default {
     },
     // 图片上传成功回调
     handleUploadSuccess(file) {
-      this.ruleForm.img_url = `https://cdn.boblog.com/${file.key}`
+      this.ruleForm.img_url = `http://r71cceehi.hn-bkt.clouddn.com/${file.key}`
       this.$message.success('上传成功!')
     },
     $imgDel(pos, $file) {
@@ -199,7 +164,7 @@ export default {
         data: formdata,
         headers: { 'Content-Type': 'multipart/form-data' }
       }).then((res) => {
-        const img_url = `https://cdn.boblog.com/${res.data.key}`
+        const img_url = `http://r71cceehi.hn-bkt.clouddn.com/${res.data.key}`
         this.$refs.md.$img2Url(pos, img_url)
         loading.close()
       }).catch(err => {

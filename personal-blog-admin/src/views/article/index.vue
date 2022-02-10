@@ -16,23 +16,12 @@
           />
         </el-form-item>
 
-        <el-form-item label="文章状态：" prop="status">
-          <el-select
-            v-model="searchForm.status"
-            placeholder="请选择状态"
-            clearable
-          >
-            <el-option label="隐藏" value="0" />
-            <el-option label="正常" value="1" />
-          </el-select>
-        </el-form-item>
-
         <el-form-item label="分类" prop="category_id">
           <el-select v-model="searchForm.category_id" placeholder="请选择分类">
             <el-option
               v-for="item in categoryList"
               :key="item.id"
-              :label="item.name"
+              :label="item.sort_name"
               :value="item.id"
             />
           </el-select>
@@ -92,7 +81,7 @@
         </el-table-column>
         <el-table-column label="分类" align="center">
           <template slot-scope="scope">
-            {{ scope.row.category_info.name }}
+            {{ scope.row.category_info.sort_name }}
           </template>
         </el-table-column>
         <el-table-column label="创建时间" align="center">
@@ -100,33 +89,9 @@
             {{ scope.row.created_at }}
           </template>
         </el-table-column>
-        <el-table-column label="文章描述" align="center">
-          <template slot-scope="scope">
-            {{ scope.row.description }}
-          </template>
-        </el-table-column>
         <el-table-column label="文章喜欢数量" align="center">
           <template slot-scope="scope">
-            {{ scope.row.favorite_num }}
-          </template>
-        </el-table-column>
-        <el-table-column label="文章SEO关键字" align="center">
-          <template slot-scope="scope">
-            {{ scope.row.seo_keyword }}
-          </template>
-        </el-table-column>
-
-        <el-table-column label="排序" align="center">
-          <template slot-scope="scope">
-            {{ scope.row.sort_order }}
-          </template>
-        </el-table-column>
-
-        <el-table-column class-name="status-col" label="状态" align="center">
-          <template slot-scope="scope">
-            <el-tag :type="scope.row.status | statusFilter">{{
-              scope.row.status | statusFilterText
-            }}</el-tag>
+            {{ scope.row.likes }}
           </template>
         </el-table-column>
         <el-table-column fixed="right" width="180" label="操作" align="center">
@@ -164,22 +129,6 @@ import { list as getCategoryList } from '@/api/category'
 
 export default {
   name: 'ArticleList',
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        0: 'danger',
-        1: 'success'
-      }
-      return statusMap[status]
-    },
-    statusFilterText(status) {
-      const statusMap = {
-        0: '隐藏',
-        1: '正常'
-      }
-      return statusMap[status]
-    }
-  },
   data() {
     return {
       categoryList: [],
@@ -189,7 +138,6 @@ export default {
       searchForm: {
         id: '',
         title: '',
-        status: '',
         page: 1,
         category_id: ''
       }

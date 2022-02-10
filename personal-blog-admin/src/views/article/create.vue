@@ -10,12 +10,6 @@
       <el-form-item label="标题" prop="title">
         <el-input v-model="ruleForm.title" />
       </el-form-item>
-      <el-form-item label="描述" prop="description">
-        <el-input v-model="ruleForm.description" />
-      </el-form-item>
-      <el-form-item label="SEO关键字" prop="seo_keyword">
-        <el-input v-model="ruleForm.seo_keyword" />
-      </el-form-item>
       <el-form-item label="图片" prop="img_url">
         <el-upload
           class="avatar-uploader"
@@ -34,24 +28,15 @@
           <i v-else class="el-icon-plus avatar-uploader-icon" />
         </el-upload>
       </el-form-item>
-      <el-form-item label="展示" prop="status">
-        <el-radio-group v-model="ruleForm.status">
-          <el-radio :label="1">显示</el-radio>
-          <el-radio :label="0">隐藏</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="分类" prop="category_id">
-        <el-select v-model="ruleForm.category_id" placeholder="请选择分类">
+      <el-form-item label="分类" prop="sort_id">
+        <el-select v-model="ruleForm.sort_id" placeholder="请选择分类">
           <el-option
             v-for="item in categoryList"
             :key="item.id"
-            :label="item.name"
+            :label="item.sort_name"
             :value="item.id"
           />
         </el-select>
-      </el-form-item>
-      <el-form-item label="排序" prop="sort_order">
-        <el-input v-model="ruleForm.sort_order" />
       </el-form-item>
       <el-form-item label="内容" prop="content">
         <mavon-editor
@@ -82,40 +67,24 @@ import { getToken } from '@/api/upload'
 import axios from 'axios'
 
 export default {
-  name: 'CategoryCreate',
+  name: 'ArticleCreate',
   data() {
     return {
       token: '',
       categoryList: [],
       ruleForm: {
         title: '',
-        description: '',
         img_url: '',
-        seo_keyword: '',
-        status: 1,
-        sort_order: 1,
-        admin_id: '',
-        category_id: '',
+        author_id: '',
+        sort_id: '',
         content: ''
       },
       rules: {
         title: [{ required: true, message: '请输入文章标题', trigger: 'blur' }],
-        description: [
-          { required: true, message: '请输入文章描述', trigger: 'blur' }
-        ],
         img_url: [
           { required: true, message: '请输入图片链接', trigger: 'blur' }
         ],
-        seo_keyword: [
-          { required: true, message: '请输入 SEO 关键字', trigger: 'blur' }
-        ],
-        status: [
-          { required: true, message: '请输入展示状态', trigger: 'blur' }
-        ],
-        sort_order: [
-          { required: true, message: '请输入文章排序', trigger: 'blur' }
-        ],
-        category_id: [
+        sort_id: [
           { required: true, message: '请选择分类', trigger: 'blur' }
         ],
         content: [
@@ -146,7 +115,7 @@ export default {
     },
     // 上传图片成功回调
     handleUploadSuccess(file) {
-      this.ruleForm.img_url = `https://cdn.boblog.com/${file.key}`
+      this.ruleForm.img_url = `http://r71cceehi.hn-bkt.clouddn.com/${file.key}`
       this.$message.success('上传成功!')
     },
     // 编辑器删除图片回调
@@ -172,7 +141,7 @@ export default {
         data: formdata,
         headers: { 'Content-Type': 'multipart/form-data' }
       }).then((res) => {
-        const img_url = `https://cdn.boblog.com/${res.data.key}`
+        const img_url = `http://r71cceehi.hn-bkt.clouddn.com/${res.data.key}`
         this.$refs.md.$img2Url(pos, img_url)
         loading.close()
       }).catch(err => {
@@ -195,7 +164,7 @@ export default {
     // 提交表单
     submitForm(formName) {
       if (this.adminInfo) {
-        this.ruleForm.admin_id = this.adminInfo.id
+        this.ruleForm.author_id = this.adminInfo.id
       }
 
       this.$refs[formName].validate(async(valid) => {

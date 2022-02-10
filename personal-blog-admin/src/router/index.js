@@ -104,7 +104,8 @@ export const constantRoutes = [
       {
         path: 'edit',
         name: 'ArticleEdit',
-        component: () => import('@/views/article/edit')
+        component: () => import('@/views/article/edit'),
+        // meta: { title: '编辑文章', icon: 'form'}
       }
     ]
   },

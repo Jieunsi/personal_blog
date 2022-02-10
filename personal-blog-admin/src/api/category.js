@@ -37,7 +37,7 @@ export function update(data) {
 }
 
 // 删除分类
-export function deleteCategory(data) {
+export function detele(data) {
   return request({
     url: '/sort/delete' + data.id,
     method: 'delete',
