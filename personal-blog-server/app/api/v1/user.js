@@ -18,5 +18,7 @@ router.get('/detail/:id', new Auth(16).m, UserController.detail);
 router.put('/update/:id', new Auth(16).m, UserController.update);
 // 删除用户
 router.delete('/delete/:id', new Auth(16).m, UserController.delete);
+// 获取用户列表
+router.get('/list', new Auth(16).m, UserController.list);
 
 module.exports = router;

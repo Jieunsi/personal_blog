@@ -7,30 +7,20 @@
         :model="searchForm"
         inline
       >
-        <el-form-item label="文章ID" prop="id">
+        <el-form-item label="用户ID" prop="id">
           <el-input
             v-model.trim="searchForm.id"
-            placeholder="文章ID"
+            placeholder="用户ID"
             class="input"
             clearable
           />
         </el-form-item>
 
-        <el-form-item label="分类" prop="category_id">
-          <el-select v-model="searchForm.category_id" placeholder="请选择分类">
-            <el-option
-              v-for="item in categoryList"
-              :key="item.id"
-              :label="item.sort_name"
-              :value="item.id"
-            />
-          </el-select>
-        </el-form-item>
 
-        <el-form-item label="文章标题" prop="title">
+        <el-form-item label="用户名称" prop="nickname">
           <el-input
-            v-model.trim="searchForm.title"
-            placeholder="文章名称"
+            v-model.trim="searchForm.nickname"
+            placeholder="用户名称"
             class="input"
             clearable
           />
@@ -42,9 +32,6 @@
           </el-button>
           <el-button type="primary" size="medium" @click="resetSearchData">
             重置
-          </el-button>
-          <el-button type="primary" size="medium" @click="create">
-            新增文章
           </el-button>
         </el-form-item>
       </el-form>
@@ -64,37 +51,22 @@
             {{ scope.row.id }}
           </template>
         </el-table-column>
-        <el-table-column label="文章标题" width="150" align="center">
+        <el-table-column label="用户名称" align="center">
           <template slot-scope="scope">
-            {{ scope.row.title }}
+            {{ scope.row.nickname }}
           </template>
         </el-table-column>
-        <el-table-column label="文章图片" align="center">
+        <el-table-column label="邮箱" align="center">
           <template slot-scope="scope">
-            <img :src="scope.row.img_url" width="80" height="80" alt="">
+            {{ scope.row.email }}
           </template>
         </el-table-column>
-        <el-table-column label="作者" width="80" align="center">
+        <el-table-column label="年龄" align="center" >
           <template slot-scope="scope">
-            {{ scope.row.admin_info.nickname }}
+            {{ scope.row.age || '暂无'}}
           </template>
         </el-table-column>
-        <el-table-column label="分类" align="center">
-          <template slot-scope="scope">
-            {{ scope.row.category_info.sort_name }}
-          </template>
-        </el-table-column>
-        <el-table-column label="创建时间" align="center">
-          <template slot-scope="scope">
-            {{ scope.row.created_at }}
-          </template>
-        </el-table-column>
-        <el-table-column label="文章喜欢数量" align="center">
-          <template slot-scope="scope">
-            {{ scope.row.likes }}
-          </template>
-        </el-table-column>
-        <el-table-column fixed="right" width="180" label="操作" align="center">
+        <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -124,50 +96,31 @@
 </template>
 
 <script>
-import { list, detele } from '@/api/article'
-import { list as getCategoryList } from '@/api/category'
+import { getUserList, deleteUser } from '@/api/user'
 
 export default {
-  name: 'ArticleList',
+  name: 'UserList',
   data() {
     return {
-      categoryList: [],
       list: null,
       listLoading: true,
       count: 0,
       searchForm: {
         id: '',
-        title: '',
-        page: 1,
-        category_id: ''
+        nickname: '',
+        page: 1
       }
     }
   },
   mounted() {
-    this.getArticleList()
-    this.getCategoryList()
+    this.fetchData()
   },
   methods: {
-    create() {
-      this.$router.push('/article/create')
-    },
-    // 获取分类列表
-    async getCategoryList() {
+    // 获取用户信息
+    async fetchData() {
       try {
         this.listLoading = true
-        const res = await getCategoryList()
-        this.categoryList = res.data.data
-      } catch (err) {
-        console.log(err)
-      } finally {
-        this.listLoading = false
-      }
-    },
-    // 获取文章列表
-    async getArticleList() {
-      try {
-        this.listLoading = true
-        const res = await list(this.searchForm)
+        const res = await getUserList(this.searchForm)
         this.list = res.data.data
         this.count = res.data.meta.count
       } catch (err) {
@@ -176,23 +129,23 @@ export default {
         this.listLoading = false
       }
     },
-    // 文章编辑
+    // 跳转编辑
     handleEdit(id) {
-      this.$router.push('/article/edit?id=' + id)
+      this.$router.push('/user/edit?id=' + id)
     },
-    // 删除文章
+    // 删除用户
     handleDelete(id) {
       try {
         this.$msgbox
-          .confirm('确定需要删除这个文章吗', '提示', {
+          .confirm('确定需要删除这个用户吗', '提示', {
             confirmButtonText: '删除',
             cancelButtonText: '取消',
             type: 'error'
           })
           .then(async() => {
-            const r = await detele({ id })
+            const r = await deleteUser({ id })
             this.$message.success(r.msg)
-            await this.getArticleList()
+            await this.fetchData()
           })
       } catch (err) {
         this.$message.error(err)
@@ -201,17 +154,17 @@ export default {
     // 搜索
     searchData() {
       this.searchForm.page = 1
-      this.getArticleList()
+      this.fetchData()
     },
-    // 点击页码
+    // 点击页面
     handleCurrentChange(page) {
       this.searchForm.page = page
-      this.getArticleList()
+      this.fetchData()
     },
     // 重置表单
     resetSearchData() {
       this.$refs['searchForm'].resetFields()
-      this.getArticleList()
+      this.fetchData()
     }
   }
 }

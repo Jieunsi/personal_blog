@@ -109,26 +109,28 @@ export const constantRoutes = [
       }
     ]
   },
-  // {
-  //   path: '/user',
-  //   component: Layout,
-  //   redirect: '/user/index',
-  //   name: 'Reply',
-  //   meta: { title: '用户管理', icon: 'el-icon-s-help' },
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       name: 'UserIndex',
-  //       component: () => import('@/views/user/index'),
-  //       meta: { title: '用户列表', icon: 'table' }
-  //     },
-  //     {
-  //       path: 'edit',
-  //       name: 'UserEdit',
-  //       component: () => import('@/views/user/edit')
-  //     }
-  //   ]
-  // },
+
+  {
+    path: '/user',
+    component: Layout,
+    redirect: '/user/index',
+    name: 'Reply',
+    meta: { title: '用户管理', icon: 'user' },
+    children: [
+      {
+        path: 'index',
+        name: 'UserIndex',
+        component: () => import('@/views/user/index'),
+        meta: { title: '用户列表', icon: 'table' }
+      },
+      {
+        path: 'edit',
+        name: 'UserEdit',
+        component: () => import('@/views/user/edit')
+      }
+    ]
+  },
+
   // {
   //   path: '/comment',
   //   component: Layout,

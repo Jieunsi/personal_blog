@@ -176,7 +176,7 @@ export default {
 }
 .pagination {
   display: flex;
-  justify-content: center;
+  justify-content: right;
   margin: 24px 0;
 }
 </style>

@@ -75,11 +75,16 @@ class UserController {
 
   /**
    * 获取用户列表
-   * TODO 
    */
-//   static async list(ctx) {
-//     const [err, data] = await UserDao.list
-//   }
+  static async list(ctx) {
+    const [err, data] = await UserDao.list(ctx.query);
+    if (!err) {
+      ctx.response.status = 200;
+      ctx.body = res.json(data);
+    } else {
+      ctx.body = res.fail(err);
+    }
+  }
 
   /**
    * 获取用户信息

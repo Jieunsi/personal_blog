@@ -127,6 +127,50 @@ class UserDao {
     }
   }
 
+  /**
+   * 获取用户列表
+   */
+  static async list(query = {}) {
+    const { id, nickname, email, page = 1, page_size = 10 } = query;
+    const scope = 'bh';
+    const filter = {}
+    if (email) {
+      filter.email = email;
+    }
+    if (id) {
+      filter.id = id;
+    }
+    if (nickname) {
+      filter.nickname = {
+        [Op.like]: `%${nickname}%`
+      }
+    }
+    try {
+      const user = await User.scope(scope).findAndCountAll({
+        where: filter,
+        limit: 10,
+        offset: (page - 1) * page_size,
+        order: [
+          ['created_at', 'DESC']
+        ]
+      });
+
+      const data = {
+        data: user.rows,
+        meta: {
+          current_page: parseInt(page),
+          per_page: 10,
+          count: user.count,
+          total: user.count,
+          total_pages: Math.ceil(user.count / 10)
+        }
+      }
+      return [null, data];
+    } catch (err) {
+      return [err, null];
+    }
+  }
+
 }
 
 module.exports = { UserDao };
