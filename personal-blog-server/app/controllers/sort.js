@@ -66,6 +66,18 @@ class SortController {
       ctx.body = res.fail(err);
     }
   }
+
+  static async detail(ctx) {
+    const v = await new PositiveIdParamsValidator().validate(ctx);
+    const id = v.get('path.id');
+    const [err, data] = await SortDao.detail(id);
+    if (!err) {
+      ctx.response.status = 200;
+      ctx.body = res.json(data);
+    } else {
+      ctx.body = res.fail(err);
+    }
+  }
 }
 
 module.exports = { SortController };

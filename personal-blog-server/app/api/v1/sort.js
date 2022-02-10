@@ -16,5 +16,7 @@ router.delete('/delete/:id',new Auth(ADMIN_LEVEL).m, SortController.delete);
 router.put('/update/:id', new Auth(ADMIN_LEVEL).m, SortController.update);
 // 获取分类列表
 router.get('/list', SortController.list);
+// 获取分类详情
+router.get('/detail/:id', SortController.detail);
 
 module.exports = router;

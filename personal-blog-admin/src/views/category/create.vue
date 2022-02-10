@@ -7,11 +7,8 @@
       label-width="80px"
       class="demo-ruleForm"
     >
-      <el-form-item label="名称" prop="name">
-        <el-input v-model="ruleForm.name" />
-      </el-form-item>
-      <el-form-item label="排序" prop="sort_order">
-        <el-input v-model="ruleForm.sort_order" />
+      <el-form-item label="名称" prop="sort_name">
+        <el-input v-model="ruleForm.sort_name" />
       </el-form-item>
       <el-form-item>
         <el-button @click="resetForm('ruleForm')">重置</el-button>
@@ -33,13 +30,9 @@ export default {
     return {
       ruleForm: {
         name: '',
-        sort_order: '1'
       },
       rules: {
-        name: [{ required: true, message: '请输入分类名称', trigger: 'blur' }],
-        sort_order: [
-          { required: true, message: '请输入分类排序', trigger: 'blur' }
-        ]
+        sort_name: [{ required: true, message: '请输入分类名称', trigger: 'blur' }],
       }
     }
   },

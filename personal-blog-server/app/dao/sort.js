@@ -58,7 +58,7 @@ class SortDao {
   static async update(id, v) {
     const sort = await Sort.findByPk(id);
     if (!sort) {
-      throw new global.err.NotFound('没有该分类');
+      throw new global.errs.NotFound('没有该分类');
     }
     sort.sort_name = v.get('body.sort_name');
     sort.parent_id = v.get('body.parent_id');
@@ -69,6 +69,14 @@ class SortDao {
     } catch (err) {
       return [err, null];
     }
+  }
+
+  static async detail(id) {
+    const sort = await Sort.findByPk(id);
+    if (!sort) {
+      throw new global.errs.NotFound('没有该分类');
+    }
+    return [null, sort];
   }
 
   /**

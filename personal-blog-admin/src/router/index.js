@@ -55,32 +55,32 @@ export const constantRoutes = [
     }]
   },
 
-  // {
-  //   path: '/category',
-  //   component: Layout,
-  //   redirect: '/category/index',
-  //   name: 'Category',
-  //   meta: { title: '分类管理', icon: 'tree' },
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       name: 'CategoryList',
-  //       component: () => import('@/views/category/index'),
-  //       meta: { title: '分类列表', icon: 'table' }
-  //     },
-  //     {
-  //       path: 'create',
-  //       name: 'CategoryCreate',
-  //       component: () => import('@/views/category/create'),
-  //       meta: { title: '创建分类', icon: 'el-icon-circle-plus-outline' }
-  //     },
-  //     {
-  //       path: 'edit',
-  //       name: 'CategoryEdit',
-  //       component: () => import('@/views/category/edit')
-  //     }
-  //   ]
-  // },
+  {
+    path: '/category',
+    component: Layout,
+    redirect: '/category/index',
+    name: 'Category',
+    meta: { title: '分类管理', icon: 'tree' },
+    children: [
+      {
+        path: 'index',
+        name: 'CategoryList',
+        component: () => import('@/views/category/index'),
+        meta: { title: '分类列表', icon: 'table' }
+      },
+      {
+        path: 'create',
+        name: 'CategoryCreate',
+        component: () => import('@/views/category/create'),
+        meta: { title: '创建分类', icon: 'el-icon-circle-plus-outline' }
+      },
+      {
+        path: 'edit',
+        name: 'CategoryEdit',
+        component: () => import('@/views/category/edit')
+      }
+    ]
+  },
 
   {
     path: '/article',

@@ -7,17 +7,8 @@
       label-width="80px"
       class="demo-ruleForm"
     >
-      <el-form-item label="名称" prop="name">
-        <el-input v-model="ruleForm.name" />
-      </el-form-item>
-      <el-form-item label="排序" prop="sort_order">
-        <el-input v-model="ruleForm.sort_order" />
-      </el-form-item>
-      <el-form-item label="展示">
-        <el-radio-group v-model="ruleForm.status">
-          <el-radio :label="0">隐藏</el-radio>
-          <el-radio :label="1">显示</el-radio>
-        </el-radio-group>
+      <el-form-item label="名称" prop="sort_name">
+        <el-input v-model="ruleForm.sort_name" />
       </el-form-item>
       <el-form-item>
         <el-button @click="resetForm('ruleForm')">重置</el-button>
@@ -34,20 +25,15 @@
 import { update, detail } from '@/api/category'
 
 export default {
-  name: 'CategoryCreate',
+  name: 'CategoryEdit',
   data() {
     return {
       ruleForm: {
         id: this.$route.query.id,
-        name: '',
-        sort_order: 1,
-        status: 1
+        sort_name: '',
       },
       rules: {
-        name: [{ required: true, message: '请输入分类名称', trigger: 'blur' }],
-        sort_order: [
-          { required: true, message: '请输入分类排序', trigger: 'blur' }
-        ]
+        sort_name: [{ required: true, message: '请输入分类名称', trigger: 'blur' }],
       }
     }
   },
@@ -72,9 +58,7 @@ export default {
         const res = await detail({
           id: this.$route.query.id
         })
-        this.ruleForm.name = res.data.name
-        this.ruleForm.status = res.data.status
-        this.ruleForm.sort_order = res.data.sort_order
+        this.ruleForm.sort_name = res.data.sort_name
       } catch (err) {
         console.log(err)
       }

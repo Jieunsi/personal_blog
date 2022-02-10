@@ -16,17 +16,6 @@
           />
         </el-form-item>
 
-        <el-form-item label="分类状态：" prop="status">
-          <el-select
-            v-model="searchForm.status"
-            placeholder="请选择状态"
-            clearable
-          >
-            <el-option label="隐藏" value="0" />
-            <el-option label="正常" value="1" />
-          </el-select>
-        </el-form-item>
-
         <el-form-item label="分类名称" prop="name">
           <el-input
             v-model.trim="searchForm.name"
@@ -66,19 +55,7 @@
         </el-table-column>
         <el-table-column label="分类名称" align="center">
           <template slot-scope="scope">
-            {{ scope.row.name }}
-          </template>
-        </el-table-column>
-        <el-table-column label="排序" align="center">
-          <template slot-scope="scope">
-            {{ scope.row.sort_order }}
-          </template>
-        </el-table-column>
-        <el-table-column class-name="status-col" label="状态" align="center">
-          <template slot-scope="scope">
-            <el-tag :type="scope.row.status | statusFilter">{{
-              scope.row.status | statusFilterText
-            }}</el-tag>
+            {{ scope.row.sort_name }}
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center">
@@ -102,7 +79,7 @@
           background
           :current-page.sync="searchForm.page"
           layout="total, prev, pager, next"
-          :total="count"
+          :total="total"
           @current-change="handleCurrentChange"
         />
       </div>
@@ -114,31 +91,14 @@
 import { list, detele } from '@/api/category'
 export default {
   name: 'CategoryList',
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        0: 'danger',
-        1: 'success'
-      }
-      return statusMap[status]
-    },
-    statusFilterText(status) {
-      const statusMap = {
-        0: '隐藏',
-        1: '正常'
-      }
-      return statusMap[status]
-    }
-  },
   data() {
     return {
       list: null,
       listLoading: true,
-      count: 0,
+      total: 0,
       searchForm: {
         id: '',
         name: '',
-        status: '',
         page: 1
       }
     }
@@ -157,7 +117,7 @@ export default {
         this.listLoading = true
         const res = await list(this.searchForm)
         this.list = res.data.data
-        this.count = res.data.meta.count
+        this.total = res.data.meta.total
       } catch (err) {
         console.log(err)
       } finally {
