@@ -151,21 +151,21 @@ export const constantRoutes = [
     ]
   },
 
-  // {
-  //   path: '/reply',
-  //   component: Layout,
-  //   redirect: '/reply/index',
-  //   name: 'Reply',
-  //   meta: { title: '回复管理', icon: 'el-icon-s-help' },
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       name: 'ReplyIndex',
-  //       component: () => import('@/views/reply/index'),
-  //       meta: { title: '回复列表', icon: 'table' }
-  //     }
-  //   ]
-  // },
+  {
+    path: '/reply',
+    component: Layout,
+    redirect: '/reply/index',
+    name: 'Reply',
+    meta: { title: '回复管理', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'index',
+        name: 'ReplyIndex',
+        component: () => import('@/views/reply/index'),
+        meta: { title: '回复列表', icon: 'table' }
+      }
+    ]
+  },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
