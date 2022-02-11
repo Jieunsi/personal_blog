@@ -51,7 +51,7 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '首页', icon: 'dashboard' }
     }]
   },
 
@@ -77,7 +77,9 @@ export const constantRoutes = [
       {
         path: 'edit',
         name: 'CategoryEdit',
-        component: () => import('@/views/category/edit')
+        hidden: true,
+        component: () => import('@/views/category/edit'),
+        meta: { title: '编辑分类', activeMenu: '/category/index'}
       }
     ]
   },
@@ -104,8 +106,10 @@ export const constantRoutes = [
       {
         path: 'edit',
         name: 'ArticleEdit',
+        hidden: true,
         component: () => import('@/views/article/edit'),
-        // meta: { title: '编辑文章', icon: 'form'}
+        meta: { activeMenu: '/article/index' }
+
       }
     ]
   },
@@ -131,21 +135,21 @@ export const constantRoutes = [
     ]
   },
 
-  // {
-  //   path: '/comment',
-  //   component: Layout,
-  //   redirect: '/comment/index',
-  //   name: 'Comment',
-  //   meta: { title: '评论管理', icon: 'el-icon-s-help' },
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       name: 'CommentIndex',
-  //       component: () => import('@/views/comment/index'),
-  //       meta: { title: '评论列表', icon: 'table' }
-  //     }
-  //   ]
-  // },
+  {
+    path: '/comment',
+    component: Layout,
+    redirect: '/comment/index',
+    name: 'Comment',
+    meta: { title: '评论管理', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'index',
+        name: 'CommentIndex',
+        component: () => import('@/views/comment/index'),
+        meta: { title: '评论列表', icon: 'table' }
+      }
+    ]
+  },
 
   // {
   //   path: '/reply',

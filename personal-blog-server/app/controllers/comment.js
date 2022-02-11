@@ -42,6 +42,66 @@ class CommentController {
       ctx.body = res.fail(err);
     }
   }
+
+  /**
+   * 修改评论
+   */
+  static async update(ctx) {
+    const v = await new PositiveArticleIdParamsValidator().validate(ctx);
+
+    const id = v.get('path.id');
+    const [err, data] = await CommentDao.update(id, v);
+
+    if (!err) {
+      ctx.response.status = 200;
+      ctx.body = res.success('更新评论成功');
+    } else {
+      ctx.body = res.fail(err);
+    }
+  }
+
+  /**
+   * 获取评论列表
+   */
+  static async list(ctx) {
+    const [err, data] = await CommentDao.list(ctx.query);
+    if (!err) {
+      ctx.response.status = 200;
+      ctx.body = res.json(data);
+    } else {
+      ctx.body = res.fail(err);
+    }
+  }
+
+  /**
+   * 获取评论详情
+   */
+  static async detail(ctx) {
+    const v = await new PositiveArticleIdParamsValidator().validate(ctx);
+    const id = v.get('path.id');
+    const [err, data] = await CommentDao.detail(id, ctx.query);
+    
+    if (!err) {
+      ctx.response.status = 200;
+      ctx.body = res.json(data);
+    } else {
+      ctx.body = res.fail(err);
+    }
+  }
+
+  /**
+   * 获取关联目标下的评论列表
+   */
+  static async targetComment(ctx) {
+    const [err, data] = await CommentDao.targetComment(ctx.query);
+    if (!err) {
+      ctx.response.status = 200;
+      ctx.body = res.json(data);
+    } else {
+      ctx.body = res.fail(err);
+    }
+  }
+
 }
 
 module.exports = { CommentController };

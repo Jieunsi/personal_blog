@@ -1,7 +1,8 @@
 <template>
   <div class="dashboard-container">
-    <div  class="dashboard-text">毕业设计: 个人博客系统后台管理系统</div>
-    <div>管理员名称: {{ name }}</div>
+    <div class="dashboard-text">毕业设计: 个人博客系统后台管理系统</div>
+    <div class="title">管理员名称: {{ name }}</div>
+    <div>点击左侧菜单</div>
   </div>
 </template>
 
@@ -19,6 +20,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.title {
+  margin-bottom: 16px;
+}
 .dashboard {
   &-container {
     margin: 30px;

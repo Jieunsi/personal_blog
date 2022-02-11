@@ -61,7 +61,7 @@ service.interceptors.response.use(
     const { response } = error
     if (response) {
       if ([401, 403].includes(response.status)) {
-        MessageBox.confirm('您已退出，您可以取消停留在此页面，或重新登录', '确认退出', {
+        MessageBox.confirm('登录状态已过期, 请重新登录', '确认退出', {
           confirmButtonText: '重新登录',
           cancelButtonText: '取消',
           type: 'error'
