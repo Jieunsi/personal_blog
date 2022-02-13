@@ -105,7 +105,7 @@ export default {
   },
   methods: {
     initData() {
-      this.$axios = axios.create({ withCredentials: false })
+      this.$axios = axios.create({ withCredentials: false }) // 好像没用
       this.getArticleDetail()
       this.getUploadToken()
       this.getCategoryList()

@@ -1,4 +1,4 @@
-# client
+# personal-blog-client
 
 ## Build Setup
 
