@@ -15,10 +15,16 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: ['element-ui/lib/theme-chalk/index.css'],
+  css: ['element-ui/lib/theme-chalk/index.css', '@/assets/css/common.css'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ['@/plugins/element-ui'],
+  plugins: ['@/plugins/element-ui',
+  '@/plugins/axios',
+  '@/plugins/md',
+  '@/plugins/route',
+  { src: '@/plugins/scrollTo', mode: 'client'},
+  '@/plugins/set-axios'
+],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -26,13 +32,14 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/eslint
-    '@nuxtjs/eslint-module',
+    // '@nuxtjs/eslint-module',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    'cookie-universal-nuxt'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -45,4 +52,4 @@ export default {
   build: {
     transpile: [/^element-ui/],
   },
-}
+};

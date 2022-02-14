@@ -1,0 +1,114 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: SourceCodePro-Regular;
+}
+ img {
+   width: 100%;
+ }
+
+.hljs {
+  box-sizing: border-box;
+  color: #abb2bf;
+  font-size: 13px;
+  background: #282c34;
+  padding: 16px;
+  border-radius: 4px;
+  overflow: hidden;
+  overflow-x: scroll;
+}
+.hljs code {
+  line-height: 1.5;
+  box-sizing: border-box;
+  font-family: SourceCodePro;
+  /*font-family: "JetBrainsMono";*/
+}
+
+.hljs-comment,.hljs-quote {
+  color: #5c6370;
+  font-style: italic
+}
+
+.hljs-doctag,.hljs-formula,.hljs-keyword {
+  color: #c678dd
+}
+
+.hljs-deletion,.hljs-name,.hljs-section,.hljs-selector-tag,.hljs-subst {
+  color: #e06c75
+}
+
+.hljs-literal {
+  color: #56b6c2
+}
+
+.hljs-addition,.hljs-attribute,.hljs-meta .hljs-string,.hljs-regexp,.hljs-string {
+  color: #98c379
+}
+
+.hljs-attr,.hljs-number,.hljs-selector-attr,.hljs-selector-class,.hljs-selector-pseudo,.hljs-template-variable,.hljs-type,.hljs-variable {
+  color: #d19a66
+}
+
+.hljs-bullet,.hljs-link,.hljs-meta,.hljs-selector-id,.hljs-symbol,.hljs-title {
+  color: #61aeee
+}
+
+.hljs-built_in,.hljs-class .hljs-title,.hljs-title.class_ {
+  color: #e6c07b
+}
+
+.hljs-emphasis {
+  font-style: italic
+}
+
+.hljs-strong {
+  font-weight: 700
+}
+
+.hljs-link {
+  text-decoration: underline
+}
+
+.opacity {
+  opacity: 0.5;
+}
+
+.pagination {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 0;
+}
+
+.response-wrap {
+  box-sizing: border-box;
+  max-width: 61.8%;
+  padding: 0;
+  margin: 0 auto;
+}
+
+
+.progress-indicator {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background-color: #0A74DA;
+}
+
+@media screen and (max-width: 540px) {
+  .response-wrap {
+    max-width: 100%;
+    padding: 0 24px;
+  }
+}
+
+.page-enter-active, .page-leave-active {
+  transition: opacity 500ms;
+}
+
+.page-enter, .page-leave-active {
+  opacity: 0;
+}

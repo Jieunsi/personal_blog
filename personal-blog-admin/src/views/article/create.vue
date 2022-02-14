@@ -115,7 +115,7 @@ export default {
     },
     // 上传图片成功回调
     handleUploadSuccess(file) {
-      this.ruleForm.img_url = `http://r71cceehi.hn-bkt.clouddn.com/${file.key}`
+      this.ruleForm.img_url = `http://cdn.jieunsi.top/${file.key}`
       this.$message.success('上传成功!')
     },
     // 编辑器删除图片回调
@@ -141,7 +141,7 @@ export default {
         data: formdata,
         headers: { 'Content-Type': 'multipart/form-data' }
       }).then((res) => {
-        const img_url = `http://r71cceehi.hn-bkt.clouddn.com/${res.data.key}`
+        const img_url = `http://cdn.jieunsi.top/${res.data.key}`
         this.$refs.md.$img2Url(pos, img_url)
         loading.close()
       }).catch(err => {
