@@ -3,7 +3,10 @@ import { removeToken, getToken } from '~/lib/auth';
 
 export default ({ $axios, store }) => {
   $axios.onRequest((config) => {
-    config.headers.Authorization = getToken();
+    const token = getToken();
+    if (token) {
+      config.headers.Authorization = token;
+    }
   });
 
   $axios.onResponse((res) => {
