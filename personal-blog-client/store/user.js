@@ -22,7 +22,7 @@ const actions = {
       const user = res.data.data
       commit('SET_USERINFO', {
         id: user.id,
-        username: user.username,
+        nickname: user.nickname,
         email: user.email
       })
       commit('SET_LOGIN_STATUS', true)
@@ -38,7 +38,7 @@ const actions = {
       const user = res.data.data
       commit('SET_USERINFO', {
         id: user.id,
-        username: user.username,
+        nickname: user.nickname,
         email: user.email
       })
       commit('SET_LOGIN_STATUS', true)
@@ -59,7 +59,7 @@ const actions = {
       const user = res.data.data
       commit('SET_USERINFO', {
         id: user.id,
-        username: user.username,
+        nickname: user.nickname,
         email: user.email
       })
       commit('SET_LOGIN_STATUS', true)

@@ -232,7 +232,7 @@ class CommentDao {
           [desc, 'DESC']
         ],
         attributes: {
-          exclude: ['updated_at', 'deleted_at', 'id']
+          exclude: ['updated_at', 'deleted_at']
         },
       });
 

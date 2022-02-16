@@ -19,17 +19,23 @@
           </div>
           <div v-if="Array.isArray(categoryList) && categoryList.length">
             <el-dropdown>
-              <span class="el-dropdown-link" >
+              <span class="el-dropdown-link">
                 分类<i class="el-icon-arrow-down el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item v-for="item in categoryList" :key="item.id">
-                  <a class="category-links" :href="'/?category_id=' + item.id">{{ item.sort_name }}</a>
+                  <a class="category-links" :href="'/?sort_id=' + item.id">{{
+                    item.sort_name
+                  }}</a>
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
-          <a href="https://github.com/Jieunsi/personal_blog" target="_blank" class="nav-item">
+          <a
+            href="https://github.com/Jieunsi/personal_blog"
+            target="_blank"
+            class="nav-item"
+          >
             Github
           </a>
         </div>
@@ -38,7 +44,7 @@
             v-model="keyword"
             size="small"
             :clearable="true"
-            placeholder="请输入内容"
+            placeholder="请输入文章标题"
             prefix-icon="el-icon-search"
             @keyup.enter.native="onSearch"
           >
@@ -50,7 +56,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
 
 export default {
   name: 'VHeader',
@@ -68,66 +74,66 @@ export default {
         {
           title: '首页',
           router: '/',
-        }
+        },
       ],
-    }
+    };
   },
   computed: {
     ...mapState({
       userInfo: (state) => state.user.userInfo,
       isLoginStatus: (state) => state.user.isLoginStatus,
-      categoryList: (state) => state.category.categoryList
+      categoryList: (state) => state.category.categoryList,
     }),
   },
   watch: {
     isLoginStatus: {
       handler() {
-        this.handleNav()
+        this.handleNav();
       },
     },
   },
   mounted() {
-    this.handleNav()
-    this.getCategory()
+    this.handleNav();
+    this.getCategory();
   },
   methods: {
     getCategory() {
-      this.$store.dispatch('category/getCategoryData')
+      this.$store.dispatch('category/getCategoryData');
     },
     onSearch() {
-      if (!this.keyword) return false
-      window.location.href = `/?keyword=${this.keyword}`
+      if (!this.keyword) return false;
+      window.location.href = `/?keyword=${this.keyword}`;
     },
     handleNav() {
       if (this.isLoginStatus) {
         this.nav.splice(2, 0, {
           title: '个人中心',
           router: '/usercenter',
-        })
+        });
       } else {
         const index = this.nav.findIndex(
           (item) => item.router === '/usercenter'
-        )
+        );
         if (index !== -1) {
-          this.nav.splice(index, 1)
+          this.nav.splice(index, 1);
         }
       }
     },
     // 返回首页
     goHome() {
-      window.location.href = '/'
+      window.location.href = '/';
     },
     // 跳转URL
     jumpURL(router) {
-      const { category_id, keyword } = this.$route.query
-      if (category_id || keyword) {
-        window.location.href = router
+      const { sort_id, keyword } = this.$route.query;
+      if (sort_id || keyword) {
+        window.location.href = router;
       } else {
-        this.$router.push(router)
+        this.$router.push(router);
       }
     },
   },
-}
+};
 </script>
 
 <style scoped lang="scss">

@@ -43,7 +43,7 @@
           </div>
           <div class="comment-item-detail">
             <div class="comment-item-user">
-              {{ (item.user_info && item.user_info.username) || '匿名评论' }}
+              {{ (item.user_info && item.user_info.nickname)}}
             </div>
             <div class="comment-item-intro">
               <span class="comment-item-created">
@@ -67,7 +67,7 @@
                 class="comment-item-reply-content-list"
               >
                 {{
-                  (replyItem.user_info && replyItem.user_info.username) ||
+                  (replyItem.user_info && replyItem.user_info.nickname) ||
                   '匿名回复'
                 }}：
                 {{ replyItem.content }}
@@ -108,11 +108,11 @@
 </template>
 
 <script>
-import LoginForm from '@/components/common/LoginForm'
-import { mapState } from 'vuex'
-import { getCommentTarget, createComment } from '@/request/api/comment'
-import { isArray } from '@/lib/utils'
-import { createReply } from '@/request/api/reply'
+import { mapState } from 'vuex';
+import LoginForm from '@/components/common/LoginForm';
+import { getCommentTarget, createComment } from '@/request/api/comment';
+import { isArray } from '@/lib/utils';
+import { createReply } from '@/request/api/reply';
 
 export default {
   name: 'ArticleComment',
@@ -134,7 +134,9 @@ export default {
       isLoad: true,
       isLogin: false,
       isAnonymous: false,
-    }
+      commentId: 0,
+      replyUserId: 0
+    };
   },
   computed: {
     ...mapState({
@@ -142,111 +144,108 @@ export default {
       isLoginStatus: (state) => state.user.isLoginStatus,
     }),
     isAnonymousComment() {
-      return !this.isLoginStatus && this.isAnonymous
+      return !this.isLoginStatus && this.isAnonymous;
     },
     userId() {
-      return (this.userInfo && this.userInfo.id) || 0
-    },
-    commentEmail() {
-      return (this.userInfo && this.userInfo.email) || ''
+      return (this.userInfo && this.userInfo.id) || 0;
     },
   },
   mounted() {
-    this.getComment()
+    this.getComment();
   },
   methods: {
     handleClose() {
-      this.isLogin = false
+      this.isLogin = false;
     },
     // 提交回复
     async submitReply(reply, index) {
       if (!reply.reply_content) {
-        this.$message.warning('请填写回复内容!')
-        return false
+        this.$message.warning('请填写回复内容!');
+        return false;
       }
 
       const [err] = await createReply({
         article_id: this.$route.query.id,
         user_id: this.userId,
-        email: this.commentEmail,
         comment_id: this.commentId,
         content: reply.reply_content,
-      })
+        reply_user_id: this.replyUserId
+      });
       if (!err) {
-        this.onSuccess()
-        this.$message.success('回复成功，审核通过后展示！')
-        this.commentList[index].reply_content = ''
-        this.commentList[index].is_show_reply = false
+        this.onSuccess();
+        this.$message.success('回复成功！');
+        this.commentList[index].reply_content = '';
+        this.commentList[index].is_show_reply = false;
+        this.getComment();
       }
     },
     showReply(item, index) {
-      this.commentId = item.id
+      this.commentId = item.id;
+      this.replyUserId = item.user_id;
       this.commentList.forEach((v, rIndex) => {
-        v.is_show_reply = rIndex === index
-      })
+        v.is_show_reply = rIndex === index;
+      });
     },
     // 提交评论
     async submitComment() {
       if (!this.commentContent) {
-        this.$message.warning('请填写评论内容!')
-        return false
+        this.$message.warning('请填写评论内容!');
+        return false;
       }
       const [err] = await createComment({
         user_id: this.userId,
         article_id: this.$route.query.id,
-        email: this.commentEmail,
         content: this.commentContent,
-      })
+      });
 
       if (!err) {
-        this.onSuccess()
-        this.$message.success('评论成功，审核通过后展示！')
+        this.onSuccess();
+        this.$message.success('评论成功!');
+        this.getComment();
       }
     },
     // 评论|回复成功
     onSuccess() {
-      this.commentEmail = ''
-      this.commentContent = ''
+      this.commentContent = '';
     },
     loginFormSuccess() {
-      this.isLogin = false
-      this.checkAnonymous()
+      this.isLogin = false;
+      this.checkAnonymous();
     },
     checkAnonymous() {
-      this.isAnonymous = !!sessionStorage.getItem('isAnonymous')
+      this.isAnonymous = !!sessionStorage.getItem('isAnonymous');
     },
     // 获取评论数据
     async getComment() {
       const [err, res] = await getCommentTarget({
         article_id: this.$route.query.id,
-        is_replay: 1,
+        is_reply: 1,
         is_user: 1,
-        status: 1,
         page: this.page,
-      })
+      });
       if (!err) {
-        const meta = res.data.data.meta
-        const data = res.data.data.data
+        const meta = res.data.data.meta;
+        const data = res.data.data.data;
 
         if (isArray(data) && meta) {
           data.forEach((item) => {
-            item.is_show_reply = false
-            item.reply_content = ''
-          })
-          this.commentList.push(...data)
+            item.is_show_reply = false;
+            item.reply_content = '';
+          });
+          this.commentList = data;
 
-          this.count = meta.count
-          this.isLoad = meta.total_pages > this.page
+          this.count = meta.count;
+          this.isLoad = meta.total_pages > this.page;
         }
       }
     },
     // 加载更多
     loadMore() {
-      this.page++
-      this.getComment()
+      this.page++;
+      this.getComment();
     },
   },
-}
+};
 </script>
 
 <style scoped lang="scss">

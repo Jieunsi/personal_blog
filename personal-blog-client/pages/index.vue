@@ -16,8 +16,20 @@
           <div class="article-item-content">
             <h1 class="article-title">{{ item.title }}</h1>
             <div class="article-category">
-              {{ item.category_info ? item.category_info.name : '' }}
+              分类: {{ item.category_info ? item.category_info.sort_name : '' }}
             </div>
+            <span class="el-icon-view view-icon">
+              {{ item.views }}
+            </span>
+            <!-- <span
+              :class="[
+                like ? 'el-icon-star-on' : `el-icon-star-off`,
+                'view-icon',
+              ]"
+              @click.stop.prevent="updateLike"
+            >
+              {{ item.likes }}
+            </span> -->
           </div>
         </a>
       </li>
@@ -34,7 +46,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { getArticleList } from '@/request/api/article';
+import { getArticleList, updateLikes } from '@/request/api/article';
 export default {
   name: 'IndexPage',
   async asyncData(context) {
@@ -45,8 +57,6 @@ export default {
       sort_id,
       keyword,
       page,
-      // is_category: 1,
-      // is_admin: 1,
     });
     if (!err) {
       const isLoad = res.data.data.meta.total_pages > page;
@@ -59,6 +69,12 @@ export default {
         article: res.data.data,
       };
     }
+  },
+
+  data() {
+    return {
+      like: false,
+    };
   },
 
   async fetch({ store }) {
@@ -107,6 +123,14 @@ export default {
       this.page++;
       this.fetchData();
     },
+
+    async updateLike() {
+      const type = this.like ? 'unlike' : 'like';
+      this.like = !this.like;
+      await updateLikes({
+        type,
+      });
+    },
   },
 };
 </script>
@@ -146,7 +170,10 @@ export default {
 
 .article-item-content {
   padding-left: 24px;
-  flex: 1;
+  /* flex: 1; */
+  /* display: flex;
+  flex-direction: column;
+  justify-content: space-between; */
 }
 
 .article-title {
@@ -166,6 +193,7 @@ export default {
 .article-category {
   font-size: 14px;
   color: #808080;
+  margin-top: 4px;
 }
 
 .empty-data {
@@ -194,6 +222,11 @@ export default {
 }
 .more-arrow img {
   width: 100%;
+}
+
+.view-icon {
+  margin-top: 16px;
+  margin-right: 16px;
 }
 
 @media screen and (max-width: 540px) {
