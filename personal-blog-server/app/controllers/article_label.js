@@ -38,9 +38,13 @@ class articleLabelController {
    */
   static async delete(ctx) {
     const v = await new PositiveIdParamsValidator().validate(ctx);
-    const id = v.get('path.id');
+    const article_id = v.get('body.article_id');
+    const label_id = v.get('body.label_id')
 
-    const [err] = await ArticleLabelDao.delete(id);
+    const [err] = await ArticleLabelDao.delete({
+      article_id,
+      label_id
+    });
     if (!err) {
       ctx.response.status = 200;
       ctx.body = res.success('文章该标签已删除');

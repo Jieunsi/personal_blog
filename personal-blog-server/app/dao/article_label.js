@@ -46,8 +46,13 @@ class ArticleLabelDao {
   /**
    * 给文章删除标签
    */
-   static async delete(id) {
-    const articleLabel = await ArticleLabel.findByPk(id);
+   static async delete(data) {
+    const articleLabel = await ArticleLabel.findOne({
+      where: {
+        article_id: data.article_id,
+        label_id: data.label_id
+      }
+    })
 
     if (!articleLabel) {
       throw new global.errs.NotFound('文章没有该标签');
