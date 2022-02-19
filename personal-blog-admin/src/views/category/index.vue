@@ -16,9 +16,9 @@
           />
         </el-form-item>
 
-        <el-form-item label="分类名称" prop="name">
+        <el-form-item label="分类名称" prop="sort_name">
           <el-input
-            v-model.trim="searchForm.name"
+            v-model.trim="searchForm.sort_name"
             placeholder="分类名称"
             class="input"
             clearable
@@ -98,7 +98,7 @@ export default {
       total: 0,
       searchForm: {
         id: '',
-        name: '',
+        sort_name: '',
         page: 1
       }
     }

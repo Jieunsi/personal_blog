@@ -54,15 +54,33 @@ class LabelDao {
     try {
       const label = await Label.findAndCountAll({
         attributes: {
-          exclude: ['created_at', 'updated_at', 'deleted_at']
-        }
+          exclude: ['created_at', 'updated_at', 'deleted_at'],
+        },
       });
 
       const data = {
         data: label.rows,
-        total: label.count
+        total: label.count,
       };
       return [null, data];
+    } catch (err) {
+      return [err, null];
+    }
+  }
+
+  /**
+   * 更新标签
+   */
+  static async update(id, v) {
+    const label = await Label.findByPk(id);
+    if (!label) {
+      throw new global.errs.NotFound('没有该标签');
+    }
+    label.label_name = v.get('body.label_name');
+
+    try {
+      const res = label.save();
+      return [null, res];
     } catch (err) {
       return [err, null];
     }

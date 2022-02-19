@@ -136,6 +136,28 @@ export const constantRoutes = [
   },
 
   {
+    path: '/label',
+    component: Layout,
+    redirect: '/label/index',
+    name: 'Label',
+    meta: { title: '标签管理', icon: 'el-icon-s-help'},
+    children: [
+      {
+        path: 'index',
+        name: 'LabelIndex',
+        component: () => import('@/views/label/index'),
+        meta: { title: '标签列表', icon: 'tree'}
+      },
+      {
+        path: 'create',
+        name: 'LabelCreate',
+        component: () => import('@/views/label/create'),
+        meta: { title: '创建标签', icon: 'el-icon-circle-plus-outline'}
+      }
+    ]
+  },
+
+  {
     path: '/comment',
     component: Layout,
     redirect: '/comment/index',

@@ -29,7 +29,7 @@ export default {
   data() {
     return {
       ruleForm: {
-        name: '',
+        sort_name: '',
       },
       rules: {
         sort_name: [{ required: true, message: '请输入分类名称', trigger: 'blur' }],

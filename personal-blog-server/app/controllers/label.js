@@ -46,6 +46,22 @@ class LabelController {
       ctx.body = res.fail(err);
     }
   }
+
+  /**
+   * 更新某个标签
+   */
+  static async update(ctx) {
+    const v = await new PositiveIdParamsValidator().validate(ctx);
+
+    const id = v.get('path.id');
+    const [err] = await LabelDao.update(id, v);
+    if (!err) {
+      ctx.response.status = 200;
+      ctx.body = res.success('更新标签成功');
+    } else {
+      ctx.body = res.fail(err);
+    }
+  }
 }
 
 module.exports = { LabelController };

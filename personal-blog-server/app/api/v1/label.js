@@ -13,5 +13,7 @@ router.post('/create', new Auth(ADMIN_LEVEL).m, LabelController.create);
 router.delete('/delete/:id', new Auth(ADMIN_LEVEL).m, LabelController.delete);
 // 获取标签列表
 router.get('/list', LabelController.list);
+// 更新标签
+router.put('/update/:id', new Auth(ADMIN_LEVEL).m, LabelController.update);
 
 module.exports = router;
