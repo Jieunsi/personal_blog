@@ -6,6 +6,7 @@ const { Article } = require('@models/article');
 const { Sort } = require('@models/sort');
 const { Comment } = require('@models/comment');
 const { Admin } = require('@models/admin');
+const { ArticleLabelDao } = require('@dao/article_label');
 const { isArray, unique } = require('@lib/utils');
 
 class ArticleDao {
@@ -105,15 +106,32 @@ class ArticleDao {
         });
 
         data.forEach((item) => {
-          item.setDataValue(
-            'category_info',
-            category[item.sort_id] || null
-          );
+          item.setDataValue('category_info', category[item.sort_id] || null);
         });
       } else {
         const res = await Sort.findOne(finner);
         data.setDataValue('category_info', res);
       }
+      return [null, data];
+    } catch (err) {
+      return [err, null];
+    }
+  }
+
+  static async _handleLabel(data, ids) {
+    try {
+      const [err, res] = await ArticleLabelDao.list(ids);
+      let label = {};
+      res.data.forEach((item) => {
+        if (label[item.article_id]) {
+          label[item.article_id].push(item);
+        } else {
+          label[item.article_id] = [item];
+        }
+      });
+      data.forEach((item) => {
+        item.setDataValue('label_info', label[item.id] || null);
+      });
       return [null, data];
     } catch (err) {
       return [err, null];
@@ -177,6 +195,19 @@ class ArticleDao {
         rows = dataAndAuthor;
       }
 
+      const articleIds = unique(
+        rows.map((item) => {
+          return item.id;
+        })
+      );
+      // 处理标签
+      const [labelErr, labelData] = await ArticleDao._handleLabel(
+        rows,
+        articleIds
+      );
+      if (!labelErr) {
+        rows = labelData;
+      }
       const data = {
         data: rows,
         // 分页
@@ -196,15 +227,15 @@ class ArticleDao {
 
   /**
    * @description 删除文章
-   * @param  id 
-   * @returns [err, data] 
+   * @param  id
+   * @returns [err, data]
    */
   static async delete(id) {
     const article = await Article.findOne({
       where: {
         id,
-        deleted_at: null
-      }
+        deleted_at: null,
+      },
     });
     if (!article) {
       throw new global.errs.NotFound('没有找到该文章');
@@ -220,15 +251,15 @@ class ArticleDao {
 
   /**
    * @description 更新文章
-   * @param  id , v 
-   * @returns 
+   * @param  id , v
+   * @returns
    */
   static async update(id, v) {
     const article = await Article.findOne({
       where: {
         id,
-        deleted_at: null
-      }
+        deleted_at: null,
+      },
     });
     if (!article) {
       throw new global.errs.NotFound('没有此文章');
@@ -238,7 +269,7 @@ class ArticleDao {
     article.img_url = v.get('body.img_url');
     article.content = v.get('body.content');
     article.sort_id = v.get('body.sort_id');
-    
+
     try {
       const res = await article.save();
       return [null, res];
@@ -249,7 +280,7 @@ class ArticleDao {
 
   /**
    * @description 更新文章浏览次数
-   * @param {id, views} 
+   * @param {id, views}
    */
   static async updateViews(id, views) {
     const article = await Article.findByPk(id);
@@ -268,9 +299,9 @@ class ArticleDao {
 
   /**
    * @description 更新文章点赞次数
-   * @param {id, likes} 
+   * @param {id, likes}
    */
-   static async updateLikes(id, likes) {
+  static async updateLikes(id, likes) {
     const article = await Article.findByPk(id);
     if (!article) {
       throw new global.errs.NotFound('没有找到相关文章');
@@ -293,7 +324,7 @@ class ArticleDao {
     try {
       let filter = {
         id,
-        deleted_at: null
+        deleted_at: null,
       };
 
       let article = await Article.findOne({
@@ -301,15 +332,9 @@ class ArticleDao {
       });
 
       // rows传的是引用值
-      await ArticleDao._handleSort(
-        article,
-        article.sort_id
-      );
+      await ArticleDao._handleSort(article, article.sort_id);
       // 处理作者
-      await ArticleDao._handleAuthor(
-        article,
-        article.author_id
-      );
+      await ArticleDao._handleAuthor(article, article.author_id);
 
       if (!article) {
         throw new global.errs.NotFound('没有该文章');
@@ -318,9 +343,9 @@ class ArticleDao {
       const comment = await Comment.findAndCountAll({
         where: {
           article_id: id,
-          deleted_at: null
+          deleted_at: null,
         },
-        attributes: ['id']
+        attributes: ['id'],
       });
 
       if (comment) {

@@ -18,6 +18,15 @@
             <div class="article-category">
               分类: {{ item.category_info ? item.category_info.sort_name : '' }}
             </div>
+            <div class="article-label">
+              文章标签:
+              <span v-if="item.label_info" >
+                <el-tag v-for="label in item.label_info" :key="label.label_id" size="small" class="article-tag">
+                  {{ label.label_name }}
+                </el-tag>
+              </span>
+              <span v-else>暂无</span>
+            </div>
             <span class="el-icon-view view-icon">
               {{ item.views }}
             </span>
@@ -225,8 +234,21 @@ export default {
 }
 
 .view-icon {
+  color: black;
   margin-top: 16px;
   margin-right: 16px;
+}
+
+.article {
+
+  &-label {
+    color: black;
+    margin-top: 8px;
+  }
+
+  &-tag {
+    margin: 0 4px;
+  }
 }
 
 @media screen and (max-width: 540px) {
