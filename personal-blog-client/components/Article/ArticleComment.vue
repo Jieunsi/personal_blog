@@ -57,8 +57,9 @@
                 回复
               </span>
             </div>
-            <div class="comment-item-content">
-              {{ item.content }}
+            <div v-html="mdRender(item.content)" class="comment-item-content">
+              <!-- {{ item.content }} -->
+
             </div>
             <div v-if="item.reply_list" class="comment-item-reply-content">
               <p
@@ -77,7 +78,7 @@
               <textarea
                 v-model="item.reply_content"
                 class="comment-item-reply-textarea"
-                placeholder="发表回复…"
+                placeholder="发表回复… (支持MD格式)"
               />
               <button
                 class="comment-item-reply-btn"
@@ -113,6 +114,28 @@ import LoginForm from '@/components/common/LoginForm';
 import { getCommentTarget, createComment } from '@/request/api/comment';
 import { isArray } from '@/lib/utils';
 import { createReply } from '@/request/api/reply';
+const hljs = require('highlight.js');
+const md = require('markdown-it')({
+  highlight(str, lang) {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return (
+          '<pre class="hljs"><code>' +
+          hljs.highlight(str, {
+            language: lang,
+            ignoreIllegals: true,
+          }).value +
+          '</code></pre>'
+        );
+      } catch (__) {
+        console.log(__);
+      }
+    }
+    return (
+      '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>'
+    );
+  },
+});
 
 export default {
   name: 'ArticleComment',
@@ -154,6 +177,9 @@ export default {
     this.getComment();
   },
   methods: {
+    mdRender(content) {
+      return md.render(content);
+    },
     handleClose() {
       this.isLogin = false;
     },
