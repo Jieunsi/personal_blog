@@ -144,21 +144,27 @@ class ArticleDao {
    * @returns
    */
   static async list(params = {}) {
-    const { sort_id, keyword, page_size = 10, page = 1 } = params;
+    const { sort_id, id, page_size = 10, page = 1,title } = params;
 
     // 过滤条件
     let filter = {
       deleted_at: null,
     };
+    if (id) {
+      filter.id = id;
+    }
+    if (title) {
+
+    }
 
     // 选择了分类
     if (sort_id) {
       filter.sort_id = sort_id;
     }
     // 输入了搜索关键字
-    if (keyword) {
+    if (title) {
       filter.title = {
-        [Op.like]: `%${keyword}%`,
+        [Op.like]: `%${title}%`,
       };
     }
     try {

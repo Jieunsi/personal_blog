@@ -38,7 +38,7 @@ class LabelController {
    * 获取标签列表
    */
   static async list(ctx) {
-    const [err, data] = await LabelDao.list();
+    const [err, data] = await LabelDao.list(ctx.query);
     if (!err) {
       ctx.response.status = 200;
       ctx.body = res.json(data);

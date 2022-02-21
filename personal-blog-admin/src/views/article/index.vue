@@ -16,8 +16,8 @@
           />
         </el-form-item>
 
-        <el-form-item label="分类" prop="category_id">
-          <el-select v-model="searchForm.category_id" placeholder="请选择分类">
+        <el-form-item label="分类" prop="sort_id">
+          <el-select v-model="searchForm.sort_id" placeholder="请选择分类">
             <el-option
               v-for="item in categoryList"
               :key="item.id"
@@ -182,7 +182,7 @@ export default {
         id: '',
         title: '',
         page: 1,
-        category_id: '',
+        sort_id: '',
       },
       editFormVisible: false,
       editingArticleId: 0,

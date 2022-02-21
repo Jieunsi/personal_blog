@@ -1,4 +1,5 @@
 const { Label } = require('@models/label');
+const { Op } = require('sequelize');
 
 class LabelDao {
   /**
@@ -50,9 +51,20 @@ class LabelDao {
   /**
    * 获取标签列表
    */
-  static async list() {
+  static async list(params = {}) {
+    const { id, label_name } = params;
+    const filter = {};
+    if (id) {
+      filter.id = id;
+    }
+    if (label_name) {
+      filter.label_name = {
+        [Op.like]: `%${label_name}%`,
+      };
+    }
     try {
       const label = await Label.findAndCountAll({
+        where: filter,
         attributes: {
           exclude: ['created_at', 'updated_at', 'deleted_at'],
         },

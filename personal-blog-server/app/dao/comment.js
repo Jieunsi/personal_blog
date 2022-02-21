@@ -129,6 +129,7 @@ class CommentDao {
         is_reply = 0,
         is_article = 0,
         is_user = 0,
+        user_id,
         content,
         id,
         article_id,
@@ -141,6 +142,9 @@ class CommentDao {
         
         if (id) {
           filter.id = id;
+        }
+        if (user_id) {
+          filter.user_id = user_id;
         }
         if (article_id) {
           filter.article_id = article_id;
