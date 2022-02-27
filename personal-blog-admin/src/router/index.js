@@ -108,29 +108,8 @@ export const constantRoutes = [
         name: 'ArticleEdit',
         hidden: true,
         component: () => import('@/views/article/edit'),
-        meta: { activeMenu: '/article/index' }
+        meta: { title: '编辑文章', activeMenu: '/article/index' }
 
-      }
-    ]
-  },
-
-  {
-    path: '/user',
-    component: Layout,
-    redirect: '/user/index',
-    name: 'Reply',
-    meta: { title: '用户管理', icon: 'user' },
-    children: [
-      {
-        path: 'index',
-        name: 'UserIndex',
-        component: () => import('@/views/user/index'),
-        meta: { title: '用户列表', icon: 'table' }
-      },
-      {
-        path: 'edit',
-        name: 'UserEdit',
-        component: () => import('@/views/user/edit')
       }
     ]
   },
@@ -153,6 +132,29 @@ export const constantRoutes = [
         name: 'LabelCreate',
         component: () => import('@/views/label/create'),
         meta: { title: '创建标签', icon: 'el-icon-circle-plus-outline'}
+      }
+    ]
+  },
+
+  {
+    path: '/user',
+    component: Layout,
+    redirect: '/user/index',
+    name: 'Reply',
+    meta: { title: '用户管理', icon: 'user' },
+    children: [
+      {
+        path: 'index',
+        name: 'UserIndex',
+        component: () => import('@/views/user/index'),
+        meta: { title: '用户列表', icon: 'table' }
+      },
+      {
+        path: 'edit',
+        name: 'UserEdit',
+        hidden: true,
+        component: () => import('@/views/user/edit'),
+        meta: { title: '编辑用户', activeMenu: '/user/index'},
       }
     ]
   },
