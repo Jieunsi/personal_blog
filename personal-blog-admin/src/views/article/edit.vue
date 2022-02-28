@@ -36,7 +36,7 @@
           <el-option
             v-for="item in categoryList"
             :key="item.id"
-            :label="item.name"
+            :label="item.sort_name"
             :value="item.id"
           />
         </el-select>

@@ -9,9 +9,6 @@
             :key="index"
             :class="[
               'nav-item',
-              {
-                'nav-item-active': navIndex === index,
-              },
             ]"
             @click="jumpURL(item.router)"
           >
@@ -50,16 +47,40 @@
           >
           </el-input>
         </div>
+        <div
+          v-if="isLoginStatus"
+          class="nav-item"
+          @click="jumpURL('/usercenter')"
+        >
+          个人中心
+        </div>
+        <el-button v-else type="text" class="login" @click="login = true"
+          >登录 / 注册</el-button
+        >
       </div>
     </div>
+
+    <el-dialog
+      :visible.sync="login"
+      width="880px"
+      top="0"
+      :lock-scroll="true"
+      :before-close="handleClose"
+    >
+      <LoginForm @on-success="login = false" />
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import LoginForm from '@/components/common/LoginForm';
 
 export default {
   name: 'VHeader',
+  components: {
+    LoginForm,
+  },
   props: {
     isCategory: {
       type: Boolean,
@@ -76,6 +97,7 @@ export default {
           router: '/',
         },
       ],
+      login: false,
     };
   },
   computed: {
@@ -106,17 +128,7 @@ export default {
     },
     handleNav() {
       if (this.isLoginStatus) {
-        this.nav.splice(2, 0, {
-          title: '个人中心',
-          router: '/usercenter',
-        });
-      } else {
-        const index = this.nav.findIndex(
-          (item) => item.router === '/usercenter'
-        );
-        if (index !== -1) {
-          this.nav.splice(index, 1);
-        }
+        this.login = false;
       }
     },
     // 返回首页
@@ -182,7 +194,6 @@ export default {
 
   &:hover {
     color: #2d8cf0;
-    text-decoration: underline;
   }
 }
 
@@ -195,7 +206,6 @@ export default {
 
   &:hover {
     color: #2d8cf0;
-    text-decoration: underline;
   }
 
   &:hover .el-icon-arrow-down {
@@ -223,6 +233,26 @@ export default {
 
 .search {
   cursor: pointer;
+}
+
+.login {
+  color: #222222;
+  margin: 0 24px;
+  font-size: 15px;
+}
+
+/deep/ .el-dialog__header {
+  padding: 0;
+}
+/deep/ .el-dialog__body {
+  padding: 0;
+}
+/deep/ .el-dialog {
+  margin: 0;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 @media screen and (max-width: 540px) {

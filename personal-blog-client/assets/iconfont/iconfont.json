@@ -1,0 +1,16 @@
+{
+  "id": "3208253",
+  "name": "毕设",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "4766692",
+      "name": "like",
+      "font_class": "like-icon",
+      "unicode": "e7c8",
+      "unicode_decimal": 59336
+    }
+  ]
+}

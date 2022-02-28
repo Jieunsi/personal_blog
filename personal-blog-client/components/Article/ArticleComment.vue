@@ -236,11 +236,11 @@ export default {
     },
     loginFormSuccess() {
       this.isLogin = false;
-      this.checkAnonymous();
+      // this.checkAnonymous();
     },
-    checkAnonymous() {
-      this.isAnonymous = !!sessionStorage.getItem('isAnonymous');
-    },
+    // checkAnonymous() {
+    //   this.isAnonymous = !!sessionStorage.getItem('isAnonymous');
+    // },
     // 获取评论数据
     async getComment() {
       const [err, res] = await getCommentTarget({

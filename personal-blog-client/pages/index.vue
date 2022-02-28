@@ -18,17 +18,28 @@
             <div class="article-category">
               分类: {{ item.category_info ? item.category_info.sort_name : '' }}
             </div>
-            <div class="article-label">
+            <div class="gray-color article-label mt1">
               文章标签:
-              <span v-if="item.label_info" >
-                <el-tag v-for="label in item.label_info" :key="label.label_id" size="small" class="article-tag">
+              <span v-if="item.label_info">
+                <el-tag
+                  v-for="label in item.label_info"
+                  :key="label.label_id"
+                  size="small"
+                  class="article-tag"
+                >
                   {{ label.label_name }}
                 </el-tag>
               </span>
               <span v-else>暂无</span>
             </div>
-            <span class="el-icon-view view-icon">
+            <span class="el-icon-view gray-color mt1 mr2">
               {{ item.views }}
+            </span>
+            <i class="iconfont icon-like-icon gray-color mr2">
+              {{ item.likes }}
+            </i>
+            <span class="el-icon-date gray-color">
+              {{ item.created_at }}
             </span>
             <!-- <span
               :class="[
@@ -156,7 +167,6 @@ export default {
 
 .article-list:hover .article-title {
   color: #0164da;
-  text-decoration: underline;
 }
 
 .article-item {
@@ -187,8 +197,8 @@ export default {
 
 .article-title {
   font-weight: bold;
-  font-size: 18px;
-  color: #404040;
+  font-size: 25px;
+  color: rgb(85, 85, 85);
   padding: 0;
   margin: 0;
 }
@@ -234,16 +244,17 @@ export default {
 }
 
 .view-icon {
-  color: black;
   margin-top: 16px;
   margin-right: 16px;
 }
 
-.article {
+.gray-color {
+  color: #808080;
+}
 
+.article {
   &-label {
-    color: black;
-    margin-top: 8px;
+    font-size: 14px;
   }
 
   &-tag {
@@ -259,5 +270,16 @@ export default {
   .article-image {
     width: 90px;
   }
+}
+
+.mt1 {
+  margin-top: 8px;
+}
+
+.mt2 {
+  margin-top: 16px;
+}
+.mr2 {
+  margin-right: 16px;
 }
 </style>
