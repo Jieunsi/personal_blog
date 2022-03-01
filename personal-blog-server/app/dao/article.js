@@ -312,7 +312,11 @@ class ArticleDao {
     if (!article) {
       throw new global.errs.NotFound('没有找到相关文章');
     }
-    article.likes = likes;
+    if (likes === 'like') {
+      article.likes++;
+    } else if (likes === 'unlike') {
+      article.likes--;
+    }
 
     try {
       const res = await article.save();

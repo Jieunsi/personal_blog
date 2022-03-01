@@ -13,14 +13,19 @@
           </span>
         </div>
         <div class="article-content" v-html="article.content"></div>
-      </div>
-      <div class="fixed-sidebar">
-        <div class="fixed-scroll-top">
-          <i class="el-icon-top icon" @click="scrollTop"></i>
+        <div class="operate">
+          <el-button
+            class="operate-btn"
+            circle
+            icon="el-icon-star-off"
+          ></el-button>
+          <el-button class="operate-btn" circle
+            ><i class="iconfont icon-like-icon"> </i
+          ></el-button>
         </div>
       </div>
     </div>
-
+    <el-backtop></el-backtop>
     <vue-lazy-component @after-leave="onLoadEnd">
       <ArticleComment class="response-wrap" />
       <img
@@ -173,6 +178,22 @@ li {
 
 .icon {
   font-size: 40px;
+}
+
+.operate {
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid #cfcbcb;
+  padding-top: 16px;
+  margin: 16px 0;
+
+  .iconfont {
+    font-size: 25px;
+  }
+
+  &-btn {
+    font-size: 25px;
+  }
 }
 
 @media screen and (max-width: 540px) {

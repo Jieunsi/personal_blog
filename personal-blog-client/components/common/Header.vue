@@ -131,6 +131,9 @@ export default {
         this.login = false;
       }
     },
+    handleClose() {
+      this.login = false;
+    },
     // 返回首页
     goHome() {
       window.location.href = '/';

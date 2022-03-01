@@ -61,6 +61,7 @@
     <div v-if="isLoad" class="response-wrap more" @click="loadMore">
       <div class="more-text">点击加载更多</div>
     </div>
+    <el-backtop></el-backtop>
   </div>
 </template>
 
