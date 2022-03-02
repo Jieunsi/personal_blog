@@ -14,18 +14,25 @@
         </div>
         <div class="article-content" v-html="article.content"></div>
         <div class="operate">
-          <el-button
-            class="operate-btn"
-            circle
-            icon="el-icon-star-off"
-          ></el-button>
-          <el-button class="operate-btn" circle
-            ><i class="iconfont icon-like-icon"> </i
-          ></el-button>
+          <div class="operate-btn" @click="clickFavor">
+            <i :class="[hasFavor ? 'el-icon-star-on' : 'el-icon-star-off']"> </i>
+          </div>
+          <div class="operate-btn" @click="clickLike">
+            <i :class="[ hasLike ? 'iconfont icon-like-fill' : 'iconfont icon-like-icon']"> </i>
+          </div>
         </div>
       </div>
     </div>
     <el-backtop></el-backtop>
+    <el-dialog
+      :visible.sync="isLogin"
+      width="880px"
+      top="0"
+      :lock-scroll="true"
+      :before-close="handleClose"
+    >
+      <LoginForm @on-success="isLogin = false" />
+    </el-dialog>
     <vue-lazy-component @after-leave="onLoadEnd">
       <ArticleComment class="response-wrap" />
       <img
@@ -43,12 +50,16 @@ import { mapState } from 'vuex';
 import { component as VueLazyComponent } from '@xunlei/vue-lazy-component';
 import { getArticleDetail } from '@/request/api/article';
 import ArticleComment from '@/components/article/ArticleComment';
+import LoginForm from '@/components/common/LoginForm';
+import * as likes from '@/request/api/likes';
+import * as favor from '@/request/api/favor';
 
 export default {
   name: 'ArticleDetail',
   components: {
     ArticleComment,
     VueLazyComponent,
+    LoginForm,
   },
   async asyncData(context) {
     const { id } = context.query;
@@ -66,6 +77,8 @@ export default {
   data() {
     return {
       isLogin: false,
+      hasLike: false,
+      hasFavor: false,
     };
   },
   async fetch({ store }) {
@@ -97,6 +110,7 @@ export default {
   },
   mounted() {
     this.initData();
+    this.initState();
   },
   methods: {
     initData() {
@@ -105,6 +119,22 @@ export default {
         // eslint-disable-next-line no-new
         this.progress = new ProgressIndicator();
       });
+    },
+    async initState() {
+      if (this.isLoginStatus) {
+        const like = await likes.liked({
+          article_id: this.$route.query.id,
+          user_id: this.userInfo.id,
+        });
+        this.hasLike = like[1].data.data.liked;
+
+        const _favor = await favor.hasFavorite({
+          article_id: this.$route.query.id,
+          user_id: this.userInfo.id,
+        });
+        this.hasFavor = _favor[1].data.data.hasFavorite;
+      }
+
     },
     // 回到顶部
     scrollTop() {
@@ -115,6 +145,48 @@ export default {
       this.$nextTick(() => {
         this.progress.calculateWidthPrecent();
       });
+    },
+    // 点击收藏按钮
+    async clickFavor() {
+      if (!this.isLoginStatus) {
+        this.$message.error('请先登录');
+        this.isLogin = true;
+      } else {
+        const type = this.hasFavor ? 'unfavorite' : 'favorite';
+        const msg = this.hasFavor ? '取消收藏成功' : '收藏成功';
+        await favor.favor({
+          article_id: this.$route.query.id,
+          user_id: this.userInfo.id,
+          type,
+        });
+        this.$message.success(msg);
+        this.hasFavor = !this.hasFavor;
+      }
+    },
+    // 点击点赞按钮
+    async clickLike() {
+      if (!this.isLoginStatus) {
+        this.$message.error('请先登录');
+        this.isLogin = true;
+      }
+      else if (this.hasLike) {
+        await likes.unlike({
+          article_id: this.$route.query.id,
+          user_id: this.userInfo.id,
+        });
+        this.$message.success('取消点赞成功');
+        this.hasLike = !this.hasLike;
+      } else {
+        await likes.like({
+          article_id: this.$route.query.id,
+          user_id: this.userInfo.id,
+        });
+        this.$message.success('点赞成功');
+        this.hasLike = !this.hasLike;
+      }
+    },
+    handleClose() {
+      this.isLogin = false;
     },
   },
 };
@@ -188,12 +260,32 @@ li {
   margin: 16px 0;
 
   .iconfont {
-    font-size: 25px;
+    font-size: 35px;
+    cursor: pointer;
+    margin: 0 8px;
+    color: #9e9e9e;
   }
 
   &-btn {
-    font-size: 25px;
+    font-size: 35px;
+    margin: 0 8px;
+    cursor: pointer;
+    color: #9e9e9e;
   }
+}
+
+/deep/ .el-dialog__header {
+  padding: 0;
+}
+/deep/ .el-dialog__body {
+  padding: 0;
+}
+/deep/ .el-dialog {
+  margin: 0;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 @media screen and (max-width: 540px) {

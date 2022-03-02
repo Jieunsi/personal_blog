@@ -75,6 +75,7 @@ export default {
       this.$store.commit('user/SET_LOGIN_STATUS', false);
       this.$store.commit('user/SET_USERINFO', null);
       this.$router.push('/');
+      this.$message.success('退出成功');
     },
     async getComment() {
       const uid = this.userInfo && this.userInfo.id;
