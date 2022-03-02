@@ -41,15 +41,6 @@
             <span class="el-icon-date gray-color">
               {{ item.created_at }}
             </span>
-            <!-- <span
-              :class="[
-                like ? 'el-icon-star-on' : `el-icon-star-off`,
-                'view-icon',
-              ]"
-              @click.stop.prevent="updateLike"
-            >
-              {{ item.likes }}
-            </span> -->
           </div>
         </a>
       </li>

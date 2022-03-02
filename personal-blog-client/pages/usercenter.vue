@@ -3,10 +3,51 @@
     <div v-if="userInfo" class="userinfo">
       <p>昵称：{{ userInfo.nickname }}</p>
       <p>邮箱：{{ userInfo.email }}</p>
-      <!-- <p style="text-indent: 2em">
-        —— 假如生活欺骗了你，请你不要放弃，坚持下去！天是不会给绝路你的！
-      </p> -->
       <el-button @click="logout"> 退出登录 </el-button>
+      <h2>收藏文章：</h2>
+      <div
+        v-if="Array.isArray(favorArticleList) && favorArticleList.length > 0"
+        class="comment"
+      >
+        <ul class="comment-list">
+          <li
+            v-for="item in favorArticleList"
+            :key="item.id"
+            class="article-item"
+            @click="handleClickArticle(item.id)"
+          >
+            <div class="article-image">
+              <img :src="item.img_url" :alt="item.title" />
+            </div>
+            <div class="article-info">
+              <span class="article-info-title">文章标题：{{ item.title }}</span>
+              <p class="article-info-time">创建时间：{{ item.created_at }}</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <h2>点赞文章：</h2>
+      <div
+        v-if="Array.isArray(likeArticleList) && likeArticleList.length > 0"
+        class="comment"
+      >
+        <ul class="comment-list">
+          <li
+            v-for="item in likeArticleList"
+            :key="item.id"
+            class="article-item"
+            @click="handleClickArticle(item.id)"
+          >
+            <div class="article-image">
+              <img :src="item.img_url" :alt="item.title" />
+            </div>
+            <div class="article-info">
+              <span class="article-info-title">文章标题：{{ item.title }}</span>
+              <p class="article-info-time">创建时间：{{ item.created_at }}</p>
+            </div>
+          </li>
+        </ul>
+      </div>
       <h2>评论列表：</h2>
       <div
         v-if="Array.isArray(commentList) && commentList.length > 0"
@@ -30,9 +71,7 @@
           />
         </div>
       </div>
-      <span v-else>
-        暂无数据
-      </span>
+      <span v-else> 暂无数据 </span>
     </div>
   </div>
 </template>
@@ -41,6 +80,8 @@
 import { mapState } from 'vuex';
 import { getCommentTarget } from '@/request/api/comment';
 import { removeToken } from '@/lib/auth';
+import { getFavorArticleList } from '@/request/api/favor';
+import { getLikeArticleList } from '@/request/api/likes';
 
 export default {
   name: 'UserCenter',
@@ -49,6 +90,8 @@ export default {
       page: 1,
       count: 0,
       commentList: [],
+      likeArticleList: [],
+      favorArticleList: [],
     };
   },
 
@@ -67,6 +110,7 @@ export default {
   },
   mounted() {
     this.getComment();
+    this.getArticleList();
   },
   methods: {
     // 退出登录
@@ -91,11 +135,26 @@ export default {
         this.count = res.data.data.meta.count;
       }
     },
+    async getArticleList() {
+      const user_id = this.userInfo.id;
+      const [, favorList] = await getFavorArticleList({
+        user_id,
+      });
+      const [, likeList] = await getLikeArticleList({
+        user_id,
+      });
+      this.favorArticleList = favorList.data.data;
+      this.likeArticleList = likeList.data.data;
+    },
     // 点击数字
     async handleCurrentChange(page) {
       this.page = page;
       await this.getComment();
       this.$scrollTo(0);
+    },
+    // 点击文章
+    handleClickArticle(articleId) {
+      this.$router.push(`/article?id=${articleId}`);
     },
   },
 };
@@ -110,5 +169,37 @@ export default {
 .comment-item {
   padding: 20px 0;
   border-bottom: 1px solid #f0f0f0;
+}
+
+.article {
+  &-item {
+    padding: 20px 0;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    display: flex;
+  }
+
+  &-image {
+    width: 100px;
+    margin-right: 16px;
+    & img {
+      width: 100%;
+      border-radius: 4px;
+    }
+  }
+
+  &-info {
+    &-title {
+      font-weight: 500;
+      font-size: 17px;
+    }
+
+    &-time {
+      color: rgb(85, 85, 85);
+    }
+  }
+}
+.article-item:hover .article-info-title {
+  color: #0164da;
 }
 </style>
