@@ -436,7 +436,7 @@ export default {
     font-size: 16px;
     font-weight: 400;
     color: #222222;
-    background: #f7f7f7;
+    background: rgb(228, 225, 225);
     &-list {
       margin-bottom: 8px;
     }

@@ -31,7 +31,7 @@ class Auth {
       } catch (error) {
         // token 不合法 过期
         if (error.name === 'TokenExpiredError') {
-          errMsg = "token已过期"
+          errMsg = "登录状态已过期"
         }
         throw new global.errs.Forbidden(errMsg);
       }

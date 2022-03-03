@@ -27,3 +27,20 @@ export function validPassword(email) {
 export function isArray(arr) {
   return Array.isArray(arr) && arr.length > 0
 }
+
+/**
+ * 对象数组排序
+ * @params arr key order
+ * @returns sorted arr
+ */
+export function sortByKey(arr, key, order) {
+  return arr.sort((a, b) => {
+    const x = a[key];
+    const y = b[key];
+    if (order) {
+      return ((x < y) ? -1 : ((x > y) ? 1 : 0) );
+    } else {
+      return ((x < y) ? ((x > y) ? 1 : 0) : -1);
+    }
+  });
+}

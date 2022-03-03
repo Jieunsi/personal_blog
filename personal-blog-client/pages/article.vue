@@ -201,7 +201,10 @@ li {
 .container {
   max-width: 1170px;
   background-color: #f9f9f9;
-  margin: 50px auto;
+  /* margin: 50px auto; */
+  position: relative;
+  margin: 0 auto 50px;
+  top: 50px;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 10px;
 }
 

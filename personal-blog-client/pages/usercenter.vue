@@ -1,8 +1,8 @@
 <template>
   <div>
     <div v-if="userInfo" class="userinfo">
-      <p>昵称：{{ userInfo.nickname }}</p>
-      <p>邮箱：{{ userInfo.email }}</p>
+      <div style="margin-bottom: 16px">昵称：{{ userInfo.nickname }}</div>
+      <div style="margin-bottom: 16px">邮箱：{{ userInfo.email }}</div>
       <el-button @click="logout"> 退出登录 </el-button>
       <h2>收藏文章：</h2>
       <div
@@ -163,18 +163,18 @@ export default {
 <style scoped lang="scss">
 .userinfo {
   width: 1024px;
-  margin: 32px auto;
+  margin: 0 auto 32px;
   font-size: 14px;
 }
 .comment-item {
   padding: 20px 0;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid #e7e1e1;
 }
 
 .article {
   &-item {
     padding: 20px 0;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid #e7e1e1;
     cursor: pointer;
     display: flex;
   }
