@@ -41,7 +41,7 @@
             v-model="keyword"
             size="small"
             :clearable="true"
-            placeholder="请输入文章标题"
+            placeholder="请输入文章标题或内容"
             prefix-icon="el-icon-search"
             @keyup.enter.native="onSearch"
           >

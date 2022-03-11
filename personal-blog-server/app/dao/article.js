@@ -144,8 +144,7 @@ class ArticleDao {
    * @returns
    */
   static async list(params = {}) {
-    const { sort_id, id, page_size = 10, page = 1,title } = params;
-
+    const { sort_id, label_id, id, page_size = 10, page = 1, keyword } = params;
     // 过滤条件
     let filter = {
       deleted_at: null,
@@ -153,20 +152,27 @@ class ArticleDao {
     if (id) {
       filter.id = id;
     }
-    if (title) {
-
-    }
 
     // 选择了分类
     if (sort_id) {
       filter.sort_id = sort_id;
     }
     // 输入了搜索关键字
-    if (title) {
-      filter.title = {
-        [Op.like]: `%${title}%`,
-      };
+    if (keyword) {
+      filter[Op.or] = [
+        {
+          title: {
+            [Op.like]: `%${keyword}%`
+          }
+        },
+        {
+          content: {
+            [Op.like]: `%${keyword}%`
+          }
+        }
+      ];
     }
+    console.log(filter);
     try {
       const article = await Article.scope('iv').findAndCountAll({
         limit: parseInt(page_size), //默认每页十条
@@ -214,6 +220,20 @@ class ArticleDao {
       if (!labelErr) {
         rows = labelData;
       }
+      
+
+      // 根据标签筛选
+      if (label_id) {
+        const labelFilterArticle = labelData.filter((item) => {
+          if (!item.toJSON().label_info) {
+            return false;
+          }
+          const labelIds = item.toJSON().label_info.map((label) => label.id);
+          return labelIds.includes(parseInt(label_id));
+        });
+        rows = labelFilterArticle;
+      }
+
       const data = {
         data: rows,
         // 分页
