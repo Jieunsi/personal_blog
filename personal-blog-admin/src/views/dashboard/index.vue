@@ -93,6 +93,7 @@ export default {
 .card-panel {
   height: 108px;
   font-size: 12px;
+  margin-top: 16px;
   position: relative;
   overflow: hidden;
   color: #666;

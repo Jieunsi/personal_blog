@@ -45,7 +45,6 @@ class Auth {
         uid: info.uid,
         scope: info.scope
       }
-
       await next()
     }
   }

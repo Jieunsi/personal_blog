@@ -23,7 +23,9 @@ const actions = {
       commit('SET_USERINFO', {
         id: user.id,
         nickname: user.nickname,
-        email: user.email
+        email: user.email,
+        img_url: user.img_url,
+        age: user.age,
       })
       commit('SET_LOGIN_STATUS', true)
       setToken(user.token)
@@ -39,7 +41,9 @@ const actions = {
       commit('SET_USERINFO', {
         id: user.id,
         nickname: user.nickname,
-        email: user.email
+        email: user.email,
+        img_url: user.img_url,
+        age: user.age,
       })
       commit('SET_LOGIN_STATUS', true)
       setToken(user.token)
@@ -50,17 +54,15 @@ const actions = {
 
   },
   async userInfo({ state, commit }, params = {}) {
-    if (state.isLoginStatus && state.userInfo) {
-      return state.userInfo
-    }
-
     const [err, res] = await info(params)
     if (!err) {
       const user = res.data.data
       commit('SET_USERINFO', {
         id: user.id,
         nickname: user.nickname,
-        email: user.email
+        email: user.email,
+        img_url: user.img_url,
+        age: user.age,
       })
       commit('SET_LOGIN_STATUS', true)
       return [null, user]

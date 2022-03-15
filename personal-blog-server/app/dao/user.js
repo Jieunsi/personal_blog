@@ -108,7 +108,7 @@ class UserDao {
     if (!user) {
       throw new global.errs.NotFound('没有此用户');
     }
-
+    
     if (v.get('body.nickname')) {
       user.nickname = v.get('body.nickname');
     }
@@ -117,6 +117,9 @@ class UserDao {
     }
     if (v.get('body.age')) {
       user.age = v.get('body.age');
+    }
+    if (v.get('body.img_url')) {
+      user.img_url = v.get('body.img_url');
     }
 
     try {

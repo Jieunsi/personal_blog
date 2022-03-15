@@ -4,7 +4,7 @@ const sk = 's1wVMpy3Uj8rknKEPHP1oWj02aWOio01MMqlsHII';
 const mac = new qiniu.auth.digest.Mac(ak, sk);
 
 const { Auth } = require('@middlewares/auth');
-const AUTH_ADMIN = 16;
+const AUTH_ADMIN = 8;
 const { Resolve } = require('@lib/helper');
 const res = new Resolve();
 

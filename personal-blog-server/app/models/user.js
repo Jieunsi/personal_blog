@@ -52,11 +52,11 @@ User.init(
       allowNull: true,
       comment: '年龄',
     },
-    // username: {
-    //   type: DataTypes.STRING,
-    //   allowNull: false,
-    //   comment: '用户名',
-    // },
+    img_url: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      comment: '头像链接'
+    }
   },
   {
     sequelize,
