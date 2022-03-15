@@ -25,74 +25,96 @@
         >
         <el-button class="info-logout" @click="logout"> 退出登录 </el-button>
       </div>
-      <h2>收藏文章：</h2>
-      <div
-        v-if="Array.isArray(favorArticleList) && favorArticleList.length > 0"
-        class="comment"
-      >
-        <ul class="comment-list">
-          <li
-            v-for="item in favorArticleList"
-            :key="item.id"
-            class="article-item"
-            @click="handleClickArticle(item.id)"
+      <el-tabs class="tabs">
+        <el-tab-pane label="收藏文章">
+          <h2>收藏文章：</h2>
+          <div
+            v-if="
+              Array.isArray(favorArticleList) && favorArticleList.length > 0
+            "
+            class="comment"
           >
-            <div class="article-image">
-              <img :src="item.img_url" :alt="item.title" />
-            </div>
-            <div class="article-info">
-              <span class="article-info-title">文章标题：{{ item.title }}</span>
-              <p class="article-info-time">创建时间：{{ item.created_at }}</p>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <h2>点赞文章：</h2>
-      <div
-        v-if="Array.isArray(likeArticleList) && likeArticleList.length > 0"
-        class="comment"
-      >
-        <ul class="comment-list">
-          <li
-            v-for="item in likeArticleList"
-            :key="item.id"
-            class="article-item"
-            @click="handleClickArticle(item.id)"
+            <ul class="comment-list">
+              <li
+                v-for="item in favorArticleList"
+                :key="item.id"
+                class="article-item"
+                @click="handleClickArticle(item.id)"
+              >
+                <div class="article-image">
+                  <img :src="item.img_url" :alt="item.title" />
+                </div>
+                <div class="article-info">
+                  <span class="article-info-title"
+                    >文章标题：{{ item.title }}</span
+                  >
+                  <p class="article-info-time">
+                    创建时间：{{ item.created_at }}
+                  </p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="点赞文章">
+          <h2>点赞文章：</h2>
+          <div
+            v-if="Array.isArray(likeArticleList) && likeArticleList.length > 0"
+            class="comment"
           >
-            <div class="article-image">
-              <img :src="item.img_url" :alt="item.title" />
+            <ul class="comment-list">
+              <li
+                v-for="item in likeArticleList"
+                :key="item.id"
+                class="article-item"
+                @click="handleClickArticle(item.id)"
+              >
+                <div class="article-image">
+                  <img :src="item.img_url" :alt="item.title" />
+                </div>
+                <div class="article-info">
+                  <span class="article-info-title"
+                    >文章标题：{{ item.title }}</span
+                  >
+                  <p class="article-info-time">
+                    创建时间：{{ item.created_at }}
+                  </p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="评论列表">
+          <h2>评论列表：</h2>
+          <div
+            v-if="Array.isArray(commentList) && commentList.length > 0"
+            class="comment"
+          >
+            <ul class="comment-list">
+              <li
+                v-for="item in commentList"
+                :key="item.id"
+                class="comment-item"
+              >
+                <p>文章：{{ item.article.title }}</p>
+                <p>评论内容：{{ item.content }}</p>
+                <p>评论时间：{{ item.created_at }}</p>
+                <p>回复：{{ item.reply_list || '无' }}</p>
+              </li>
+            </ul>
+            <div class="pagination">
+              <el-pagination
+                background
+                :current-page.sync="page"
+                layout="total, prev, pager, next"
+                :total="count"
+                @current-change="handleCurrentChange"
+              />
             </div>
-            <div class="article-info">
-              <span class="article-info-title">文章标题：{{ item.title }}</span>
-              <p class="article-info-time">创建时间：{{ item.created_at }}</p>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <h2>评论列表：</h2>
-      <div
-        v-if="Array.isArray(commentList) && commentList.length > 0"
-        class="comment"
-      >
-        <ul class="comment-list">
-          <li v-for="item in commentList" :key="item.id" class="comment-item">
-            <p>文章：{{ item.article.title }}</p>
-            <p>评论内容：{{ item.content }}</p>
-            <p>评论时间：{{ item.created_at }}</p>
-            <p>回复：{{ item.reply_list || '无' }}</p>
-          </li>
-        </ul>
-        <div class="pagination">
-          <el-pagination
-            background
-            :current-page.sync="page"
-            layout="total, prev, pager, next"
-            :total="count"
-            @current-change="handleCurrentChange"
-          />
-        </div>
-      </div>
-      <span v-else> 暂无数据 </span>
+          </div>
+          <span v-else> 暂无数据 </span>
+        </el-tab-pane>
+      </el-tabs>
     </div>
     <el-dialog title="编辑资料" :visible.sync="modifiedDialogVisible">
       <div>
@@ -130,9 +152,7 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="modifiedDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="submit"
-          >确定</el-button
-        >
+        <el-button type="primary" @click="submit">确定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -260,7 +280,7 @@ export default {
       } catch (err) {
         console.log(err);
       }
-    }
+    },
   },
 };
 </script>
@@ -327,6 +347,13 @@ export default {
     right: 136px;
     bottom: 24px;
   }
+}
+.tabs {
+  background-color: #fff;
+  padding: 16px 20px 24px;
+  position: relative;
+  top: 16px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 10px;
 }
 .avatar-uploader-icon {
   font-size: 28px;
